@@ -2,7 +2,6 @@ package model
 
 import (
 	"context"
-	"time"
 
 	"gorm.io/gorm"
 )
@@ -23,5 +22,5 @@ type UserPropEntity struct {
 }
 
 type UserPropRepository interface {
-	Create(ctx context.Context, tx *gorm.DB, userProp UserPropEntity, t time.Time)
+	Create(ctx context.Context, tx *gorm.DB, userProp *UserPropEntity)
 }
