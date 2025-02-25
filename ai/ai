@@ -3,3 +3,6 @@
 在 propRepo 结构体中实现 PropRepository 接口， 使用gorm库，假设 gorm.DB的变量是 db
 
 在 repo 目录下，实现 UserPropRepository 接口，使用 gorm库
+
+SignConfigRepository
+在 repo 目录下，实现 SignConfigRepository 接口，使用 gorm库

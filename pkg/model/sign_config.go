@@ -33,7 +33,7 @@ type SignRewardConfig struct {
 
 type SignConfigRepository interface {
 	// 根据场景获取签到配置
-	GetByScent(ctx context.Context, tx *gorm.DB, scene int64) *SignConfigEntity
+	GetByScene(ctx context.Context, tx *gorm.DB, scene int64) *SignConfigEntity
 	// 创建签到配置
 	Create(ctx context.Context, tx *gorm.DB, signConfig *SignConfigEntity)
 }
