@@ -24,7 +24,7 @@ func (r *propRepo) Create(ctx context.Context, tx *gorm.DB, prop *model.PropEnti
 	fn.PanicErr(err)
 }
 
-func (r *propRepo) Get(ctx context.Context, tx *gorm.DB, propId int64) *model.Proper {
+func (r *propRepo) Get(ctx context.Context, tx *gorm.DB, propId int64) model.Proper {
 	var p model.PropEntity
 	err := tx.WithContext(ctx).Where("id = ?", propId).First(&p).Error
 	if err != nil {

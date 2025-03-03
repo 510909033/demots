@@ -28,12 +28,12 @@ func (p *propUseCase) _SendRewardOne(ctx context.Context, tx *gorm.DB, user *mod
 		useBag := model.NewUserBager(user, propInfo)
 		useBag.SetAddTs(now)
 		useBag.SetEndTs(0)
-		useBag.SetCount(propInfo.GetCount())
+		useBag.SetCount(rewarder.GetCount())
 
 		useBagRepo.Create(ctx, tx, useBag)
 	case model.PropTypeExperience:
 		commonCase.CompleteUserAction(ctx, tx, user, &model.UserActionReq{
-			AddExperience:               propInfo.GetCount() * propInfo.ConvertExperiencer().GetExperience(),
+			AddExperience:               rewarder.GetCount() * propInfo.ConvertExperiencer().GetExperience(),
 			AddLevel_1:                  false,
 			ConvertAllExperienceToLevel: false,
 			AddAttribute:                &model.AddAttributeReq{},
