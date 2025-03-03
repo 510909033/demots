@@ -26,7 +26,7 @@ var (
 	taskRepo     model.TaskRepository     = repo.NewTaskRepository()
 	userTaskRepo model.UserTaskRepository = repo.NewUserTaskRepository()
 	propRepo     model.PropRepository     = repo.NewPropRepository()
-	useBagRepo   model.UserBagRepository  //= repo.NewUserBagRepository()
+	useBagRepo   model.UserBagRepository  = repo.NewUserBagRepository()
 
 	// taskCase     model.TaskUseCase     = NewTaskUseCase()
 	// userTaskCase model.UserTaskUseCase = NewUserTaskUseCase()
@@ -270,6 +270,9 @@ func (e *Entity) Debug(ctx context.Context) {
 	db.AutoMigrate(&model.UserEntity{})
 	db.AutoMigrate(&model.GearEntity{})
 	db.AutoMigrate(&model.UserGearEntity{})
+	db.AutoMigrate(&model.TaskEntity{})
+	db.AutoMigrate(&model.UserTaskEntity{})
+	db.AutoMigrate(&model.UserBagEntity{})
 
 	// 登录
 	e.Login(ctx, &model.LoginReq{

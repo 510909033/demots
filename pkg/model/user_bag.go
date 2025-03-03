@@ -43,7 +43,7 @@ func NewUserBager(userid NewUserIder, propid NewPropId) UserBager {
 type UserBagRepository interface {
 	Create(ctx context.Context, tx *gorm.DB, userBag UserBager)
 	Delete(ctx context.Context, tx *gorm.DB, userId int64, propId int64)
-	GetAll(ctx context.Context, tx *gorm.DB, userId int64) []*UserBager
+	GetAll(ctx context.Context, tx *gorm.DB, userId int64) []UserBager
 	// 更改数量
 	SetCount(ctx context.Context, tx *gorm.DB, userId int64, propId int64, count int64)
 }
