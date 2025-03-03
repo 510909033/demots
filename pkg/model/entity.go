@@ -32,10 +32,7 @@ type EntityUseCase interface {
 	InitGearConfig(ctx context.Context)
 
 	Debug(ctx context.Context)
-	// 增加经验
-	AddExperience(ctx context.Context, user *UserEntity, experience int64)
-	// 增加等级
-	AddLevel(ctx context.Context, user *UserEntity, level int64)
+
 	// 直接增加经验值
 	CompleteUserAction(ctx context.Context, user *UserEntity, param *UserActionReq) (*CompleteAddExperienceResp, error)
 	// 更换装备
@@ -79,6 +76,8 @@ type UserActionReq struct {
 	ConvertAllExperienceToLevel bool `json:"convert_all_experience_to_level"`
 	// 分配属性（未分配的属性点需要充足）
 	AddAttribute *AddAttributeReq `json:"add_attribute"`
+	// 增加未分配属性点（如果是减少，分配的属性点需要充足）
+	AddUnallocatedAttribute *AddAttributeReq `json:"add_unallocated_attribute"`
 
 	// 用户背包增加装备
 	AddUserBagGear AddUserBagGear `json:"add_user_bag_gear"`

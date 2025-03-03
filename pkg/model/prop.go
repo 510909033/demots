@@ -9,6 +9,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var _ Proper = &PropEntity{}
+
 type NewPropId interface {
 	NewPropId() int64
 }
@@ -78,4 +80,16 @@ func (e *PropEntity) Convert() {
 
 type PropUseCase interface {
 	SendReward(ctx context.Context, tx *gorm.DB, user *UserEntity, now int64, taskRewarder TaskRewarder)
+}
+
+// PropType
+func (t PropType) String() string {
+	switch t {
+	case PropTypeGear:
+		return "装备"
+	case PropTypeExperience:
+		return "经验"
+	default:
+		return "unknown"
+	}
 }

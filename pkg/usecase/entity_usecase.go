@@ -22,16 +22,17 @@ var lock sync.Mutex
 
 // usecase
 var (
-	userRepo     model.UserRepository
-	taskRepo     model.TaskRepository
-	userTaskRepo model.UserTaskRepository
-	propRepo     model.PropRepository
-	useBagRepo   model.UserBagRepository
+	userRepo     model.UserRepository     = repo.NewUserRepository()
+	taskRepo     model.TaskRepository     //= repo.NewTaskRepository()
+	userTaskRepo model.UserTaskRepository //= repo.NewUserTaskRepository()
+	propRepo     model.PropRepository     //= repo.NewPropRepository()
+	useBagRepo   model.UserBagRepository  //= repo.NewUserBagRepository()
 
-	taskCase     model.TaskUseCase
-	userTaskCase model.UserTaskUseCase
-	propCase     model.PropUseCase
-	commonCase   model.CommonUseCase
+	// taskCase     model.TaskUseCase     = NewTaskUseCase()
+	// userTaskCase model.UserTaskUseCase = NewUserTaskUseCase()
+	propCase   model.PropUseCase   = NewPropUseCase()
+	commonCase model.CommonUseCase = NewCommonUseCase()
+	debug                          = NewDebug()
 )
 
 // 所有道具
@@ -71,7 +72,6 @@ func NewEntity(
 	db = db.Debug()
 
 	entityUseCase := &Entity{
-		user: user,
 		gear: repo.NewGearRepository(),
 		// prop: repo.NewPropRepository(),
 	}
@@ -85,7 +85,6 @@ func NewEntity(
 }
 
 type Entity struct {
-	user model.UserRepository
 	gear model.GearRepository
 	prop model.PropRepository
 }
@@ -265,16 +264,6 @@ func (e *Entity) UpdateUser(ctx context.Context, user *model.UserEntity) {
 	commonCase.UpdateUser(ctx, user)
 }
 
-// AddLevel implements model.EntityUseCase.
-func (e *Entity) AddLevel(ctx context.Context, user *model.UserEntity, level int64) {
-	e.user.AddLevel(ctx, db, user, level)
-}
-
-// AddExperience implements model.EntityUseCase.
-func (e *Entity) AddExperience(ctx context.Context, user *model.UserEntity, experience int64) {
-	e.user.AddExperience(ctx, db, user, experience)
-}
-
 // Debug implements model.EntityUseCase.
 func (e *Entity) Debug(ctx context.Context) {
 	db.AutoMigrate(&model.PropEntity{})
@@ -289,10 +278,10 @@ func (e *Entity) Debug(ctx context.Context) {
 
 	action := "create_user"
 	// action = "prop_test"
-	// action = "CompleteAddExperience"
-	action = "SetUserGear"
+	action = "CompleteAddExperience"
+	// action = "SetUserGear"
 	// action = "InitGearConfig"
-	action = "mock"
+	// action = "mock"
 	switch action {
 	case "create_user":
 		user := &model.UserEntity{
@@ -305,12 +294,12 @@ func (e *Entity) Debug(ctx context.Context) {
 			Name:       "user1",
 			Age:        10,
 		}
-		e.user.Create(ctx, db, user)
+		userRepo.Create(ctx, db, user)
 		log.Info(GetJsonString(user))
 
-		e.user.AddExperience(ctx, db, user, 20)
+		userRepo.AddExperience(ctx, db, user, 20)
 		log.Info(GetJsonString(user))
-		user = e.user.Get(ctx, db, user.Id)
+		user = userRepo.Get(ctx, db, user.Id)
 		log.Info(GetJsonString(user))
 
 	case "prop_test":
@@ -332,9 +321,14 @@ func (e *Entity) Debug(ctx context.Context) {
 				Intellect: 110,
 				Physique:  10,
 			},
+			AddUnallocatedAttribute: &model.AddAttributeReq{
+				Intellect: 100,
+				Physique:  100,
+			},
 		})
 		fn.PanicErr(err)
 		log.Infof("CompleteUserAction resp: %v", GetJsonString(resp))
+		debug.DebugUserInfo(ctx, UserMap[3])
 	case "SetUserGear":
 		e.CompleteUserChangeGear(ctx, UserMap[3], &model.UserChangeGearReq{Position: 1, PropId: 574})
 		e.CompleteUserChangeGear(ctx, UserMap[3], &model.UserChangeGearReq{Position: 2, PropId: 575})
@@ -429,7 +423,7 @@ func (e *Entity) Login(ctx context.Context, param *model.LoginReq) (*model.Login
 	var user *model.UserEntity
 	err := db.Transaction(func(tx *gorm.DB) error {
 		if fn.Recover(func() {
-			user = e.user.Get(ctx, tx, param.Id)
+			user = userRepo.Get(ctx, tx, param.Id)
 		}) != nil {
 			return model.ErrLoginUserNotExist
 		}
@@ -454,7 +448,7 @@ func (e *Entity) Reconnect(ctx context.Context, param *model.LoginReq) (*model.L
 	var user *model.UserEntity
 	err := db.Transaction(func(tx *gorm.DB) error {
 		if fn.Recover(func() {
-			user = e.user.Get(ctx, tx, param.Id)
+			user = userRepo.Get(ctx, tx, param.Id)
 		}) != nil {
 			return model.ErrLoginUserNotExist
 		}
@@ -484,12 +478,12 @@ func (e *Entity) CompleteUserChangeGear(ctx context.Context, user *model.UserEnt
 
 	err := db.Transaction(func(tx *gorm.DB) error {
 		// 获取最新用户信息
-		user = e.user.Get(ctx, tx, user.Id)
+		user = userRepo.Get(ctx, tx, user.Id)
 
 		// 更换装备
-		e.user.SetUserGear(ctx, tx, user, param.Position, param.PropId, e.CheckUserCanChangeGear)
+		userRepo.SetUserGear(ctx, tx, user, param.Position, param.PropId, e.CheckUserCanChangeGear)
 		// 获取最新用户信息
-		user = e.user.Get(ctx, tx, user.Id)
+		user = userRepo.Get(ctx, tx, user.Id)
 
 		return nil
 	})

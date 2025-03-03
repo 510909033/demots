@@ -14,6 +14,11 @@ func NewCommonUseCase() model.CommonUseCase {
 type commonUseCase struct {
 }
 
+// GetUserDayTaskList implements model.CommonUseCase.
+func (c *commonUseCase) GetUserDayTaskList(ctx context.Context, user *model.UserEntity, now int64) (*model.UserDayTaskListResp, error) {
+	panic("unimplemented")
+}
+
 // CompleteUserAction implements model.CommonUseCase.
 func (c *commonUseCase) CompleteUserAction(ctx context.Context, tx *gorm.DB, user *model.UserEntity, param *model.UserActionReq) (*model.CompleteAddExperienceResp, error) {
 	var resp = &model.CompleteAddExperienceResp{
@@ -46,7 +51,7 @@ func (c *commonUseCase) CompleteUserAction(ctx context.Context, tx *gorm.DB, use
 		userRepo.AddLevel(ctx, tx, user, 1)
 		// 经验值减少
 		userRepo.AddExperience(ctx, tx, user, -model.LevelConfigMap[user.Level].NeedExperience)
-		// 增加属性
+		// 增加未分配属性
 		userRepo.AddUnallocatedAttribute(ctx, tx, user, model.LevelConfigMap[user.Level])
 
 		// 获取最新用户信息
@@ -73,6 +78,19 @@ func (c *commonUseCase) CompleteUserAction(ctx context.Context, tx *gorm.DB, use
 
 			resp.LevelList = append(resp.LevelList, user.Level)
 		}
+	}
+
+	// 分配 【未分配属性】
+	if param.AddUnallocatedAttribute != nil {
+		userRepo.AddUnallocatedAttribute(ctx, tx, user, &model.LevelConfig{
+			NeedExperience: 0,
+			Intellect:      param.AddAttribute.Intellect,
+			Physique:       param.AddAttribute.Physique,
+			// TODO W 继续补充
+		})
+
+		// 获取最新用户信息
+		user = userRepo.Get(ctx, tx, user.Id)
 	}
 
 	// 分配属性
