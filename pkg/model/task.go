@@ -15,24 +15,43 @@ const (
 	EnumTaskTypeMonth TaskType = 3 // 每月任务
 )
 
-// type Task struct {
-// }
+type TaskEntity struct {
+	TaskId   int64
+	TaskType TaskType
+	MaxCount int64
+	StartTs  int64
+	EndTs    int64
+	Deadline int64
+	Award    TaskRewarder
+}
 
-// type TaskRepository interface {
-// 	GetById(ctx context.Context, tx *gorm.DB, taskId int64) (*Task, error)
-// }
+func (t *TaskEntity) GetTaskId() int64 {
+	return t.TaskId
+}
 
-// 一个任务的接口定义
-// type Tasker interface {
-// 	// 获取任务id
-// 	GetTaskId(ctx context.Context) int64
-// 	// 任务类型，1每天任务，2每周任务， 3每月任务
-// 	GetTaskType(ctx context.Context) int64
-// 	// 获取当前任务类型，任务周期内最大可完成任务数
-// 	GetMaxCount(ctx context.Context) int64
-// 	// 检查给定的时间戳是否在任务有效期内
-// 	CheckTsInValid(ctx context.Context, ts int64) bool
-// }
+func (t *TaskEntity) GetTaskType() TaskType {
+	return t.TaskType
+}
+
+func (t *TaskEntity) GetMaxCount() int64 {
+	return t.MaxCount
+}
+
+func (t *TaskEntity) GetStartTs() int64 {
+	return t.StartTs
+}
+
+func (t *TaskEntity) GetEndTs() int64 {
+	return t.EndTs
+}
+
+func (t *TaskEntity) GetDeadline() int64 {
+	return t.Deadline
+}
+
+func (t *TaskEntity) GetAward() TaskRewarder {
+	return t.Award
+}
 
 type Tasker interface {
 	// 获取任务id

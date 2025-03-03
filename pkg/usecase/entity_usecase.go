@@ -25,7 +25,7 @@ var (
 	userRepo     model.UserRepository     = repo.NewUserRepository()
 	taskRepo     model.TaskRepository     //= repo.NewTaskRepository()
 	userTaskRepo model.UserTaskRepository //= repo.NewUserTaskRepository()
-	propRepo     model.PropRepository     //= repo.NewPropRepository()
+	propRepo     model.PropRepository     = repo.NewPropRepository()
 	useBagRepo   model.UserBagRepository  //= repo.NewUserBagRepository()
 
 	// taskCase     model.TaskUseCase     = NewTaskUseCase()
