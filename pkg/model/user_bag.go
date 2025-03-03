@@ -1,0 +1,62 @@
+package model
+
+import (
+	"context"
+
+	"gorm.io/gorm"
+)
+
+type UserBager interface {
+	GetUserId() int64
+	GetPropId() int64
+	GetAddTs() int64
+	GetEndTs() int64
+	GetCount() int64
+
+	// set
+	SetUserId(userId NewUserIder)
+	SetPropId(propId NewPropId)
+	SetAddTs(addTs int64)
+	SetEndTs(endTs int64)
+	SetCount(count int64)
+}
+
+func NewUserBager(userid NewUserIder, propid NewPropId) UserBager {
+	return (UserBager)(nil)
+}
+
+// // 用户背包
+// type UserBag struct {
+// 	UserID int64 `gorm:"primaryKey"`
+// 	PropId int64 `gorm:"primaryKey"`
+
+// 	// // 物品类型, 0未知， 1装备， 道具
+// 	// BagType int64
+// 	// // 物品id
+// 	// ContentId int64
+// 	// 添加时间戳
+// 	AddTs int64
+// 	// 有效期时间戳，0表示不失效
+// 	EndTs int64
+// 	// 物品数量
+// 	Count int64
+// }
+
+type UserBagRepository interface {
+	Create(ctx context.Context, tx *gorm.DB, userBag UserBager)
+	Delete(ctx context.Context, tx *gorm.DB, userId int64, propId int64)
+	GetAll(ctx context.Context, tx *gorm.DB, userId int64) []*UserBager
+	// 更改数量
+	SetCount(ctx context.Context, tx *gorm.DB, userId int64, propId int64, count int64)
+}
+
+type UserBagUseCase interface {
+	// // 添加物品
+	// AddUserBag(ctx context.Context, user *UserEntity, param *UserBag)
+	// // 减少物品
+	// SubUserBag(ctx context.Context, user *UserEntity, param *UserBag)
+	// // 获取物品
+	// GetUserBag(ctx context.Context, user *UserEntity, propId int64) *UserBag
+	// // 获取所有物品
+	// GetAllUserBag(ctx context.Context, user *UserEntity) []*UserBag
+}
