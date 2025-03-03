@@ -23,8 +23,8 @@ var lock sync.Mutex
 // usecase
 var (
 	userRepo     model.UserRepository     = repo.NewUserRepository()
-	taskRepo     model.TaskRepository     //= repo.NewTaskRepository()
-	userTaskRepo model.UserTaskRepository //= repo.NewUserTaskRepository()
+	taskRepo     model.TaskRepository     = repo.NewTaskRepository()
+	userTaskRepo model.UserTaskRepository = repo.NewUserTaskRepository()
 	propRepo     model.PropRepository     = repo.NewPropRepository()
 	useBagRepo   model.UserBagRepository  //= repo.NewUserBagRepository()
 

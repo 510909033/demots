@@ -80,3 +80,87 @@ type UserTaskRepository interface {
 func NewUserTasker(userId, taskId int64) UserTasker {
 	return (UserTasker)(nil)
 }
+
+type UserTaskEntity struct {
+	UserId     int64
+	TaskId     int64
+	CreateTs   int64
+	CompleteTs int64
+	Status     UserTaskStatus
+	GiveUpTs   int64
+	ReceiveTs  int64
+	StartTs    int64
+	EndTs      int64
+}
+
+func (u *UserTaskEntity) GetUserId() int64 {
+	return u.UserId
+}
+
+func (u *UserTaskEntity) GetTaskId() int64 {
+	return u.TaskId
+}
+
+func (u *UserTaskEntity) GetCreateTs() int64 {
+	return u.CreateTs
+}
+
+func (u *UserTaskEntity) GetCompleteTs() int64 {
+	return u.CompleteTs
+}
+
+func (u *UserTaskEntity) GetStatus() UserTaskStatus {
+	return u.Status
+}
+
+func (u *UserTaskEntity) GetGiveUpTs() int64 {
+	return u.GiveUpTs
+}
+
+func (u *UserTaskEntity) GetReceiveTs() int64 {
+	return u.ReceiveTs
+}
+
+func (u *UserTaskEntity) GetStartTs() int64 {
+	return u.StartTs
+}
+
+func (u *UserTaskEntity) GetEndTs() int64 {
+	return u.EndTs
+}
+
+func (u *UserTaskEntity) SetUserId(userId int64) {
+	u.UserId = userId
+}
+
+func (u *UserTaskEntity) SetTaskId(taskId int64) {
+	u.TaskId = taskId
+}
+
+func (u *UserTaskEntity) SetCreateTs(createTs int64) {
+	u.CreateTs = createTs
+}
+
+func (u *UserTaskEntity) SetCompleteTs(completeTs int64) {
+	u.CompleteTs = completeTs
+}
+
+func (u *UserTaskEntity) SetGiveUpTs(giveUpTs int64) {
+	u.GiveUpTs = giveUpTs
+}
+
+func (u *UserTaskEntity) SetReceiveTs(receiveTs int64) {
+	u.ReceiveTs = receiveTs
+}
+
+func (u *UserTaskEntity) SetStatus(status UserTaskStatus) {
+	u.Status = status
+}
+
+func (u *UserTaskEntity) SetStartTs(startTs int64) {
+	u.StartTs = startTs
+}
+
+func (u *UserTaskEntity) SetEndTs(endTs int64) {
+	u.EndTs = endTs
+}

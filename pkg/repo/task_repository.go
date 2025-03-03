@@ -11,7 +11,7 @@ import (
 type taskRepo struct {
 }
 
-func NewTaskRepo(db *gorm.DB) model.TaskRepository {
+func NewTaskRepository() model.TaskRepository {
 	return &taskRepo{}
 }
 
