@@ -264,13 +264,13 @@ func (e *Entity) UpdateUser(ctx context.Context, user *model.UserEntity) {
 
 // Debug implements model.EntityUseCase.
 func (e *Entity) Debug(ctx context.Context) {
-	db.AutoMigrate(&model.PropEntity{})
-	db.AutoMigrate(&model.UserEntity{})
-	db.AutoMigrate(&model.GearEntity{})
-	db.AutoMigrate(&model.UserGearEntity{})
+	// db.AutoMigrate(&model.PropEntity{})
+	// db.AutoMigrate(&model.UserEntity{})
+	// db.AutoMigrate(&model.GearEntity{})
+	// db.AutoMigrate(&model.UserGearEntity{})
 	db.AutoMigrate(&model.TaskEntity{})
-	db.AutoMigrate(&model.UserTaskEntity{})
-	db.AutoMigrate(&model.UserBagEntity{})
+	// db.AutoMigrate(&model.UserTaskEntity{})
+	// db.AutoMigrate(&model.UserBagEntity{})
 
 	// 登录
 	e.Login(ctx, &model.LoginReq{

@@ -62,6 +62,16 @@ func (u *UserEntity) GetUserId() int64 {
 // type TUserGear map[int64]*GearEntity // key 是position
 type TUserGear map[int64]*UserGearEntity
 
+func (u *UserEntity) GetUserGear(pos int64) *UserGearEntity {
+	if _, ok := u.UserGear[pos]; !ok {
+		return &UserGearEntity{
+			PropId:   0,
+			Position: pos,
+		}
+	}
+	return u.UserGear[pos]
+}
+
 // key 是propId
 type TUserBag map[int64]UserBager
 

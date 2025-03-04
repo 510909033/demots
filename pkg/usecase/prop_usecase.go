@@ -15,12 +15,12 @@ type propUseCase struct {
 }
 
 // SendReward implements model.PropUseCase.
-func (p *propUseCase) SendReward(ctx context.Context, tx *gorm.DB, user *model.UserEntity, now int64, taskRewarder model.TaskRewarder) {
+func (p *propUseCase) SendReward(ctx context.Context, tx *gorm.DB, user *model.UserEntity, now int64, taskRewarder *model.TaskReward) {
 	for _, reward := range taskRewarder.GetProps() {
 		p._SendRewardOne(ctx, tx, user, now, reward)
 	}
 }
-func (p *propUseCase) _SendRewardOne(ctx context.Context, tx *gorm.DB, user *model.UserEntity, now int64, rewarder model.RewardOner) {
+func (p *propUseCase) _SendRewardOne(ctx context.Context, tx *gorm.DB, user *model.UserEntity, now int64, rewarder model.Reward) {
 	propInfo := propRepo.Get(ctx, tx, rewarder.GetPropId())
 
 	switch propInfo.GetType() {

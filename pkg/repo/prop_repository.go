@@ -11,6 +11,15 @@ import (
 
 type propRepo struct{}
 
+// GetRandomProp implements model.PropRepository.
+func (r *propRepo) GetRandomProp(ctx context.Context, tx *gorm.DB) model.Proper {
+	var resp model.PropEntity
+	err := tx.Model(&model.PropEntity{}).Order("RAND()").Find(&resp).Error
+	fn.PanicErr(err)
+	return &resp
+
+}
+
 func NewPropRepository() model.PropRepository {
 	return &propRepo{}
 }

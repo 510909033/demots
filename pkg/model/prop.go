@@ -88,6 +88,9 @@ func (e *PropEntity) NewPropId() int64 {
 type PropRepository interface {
 	Create(ctx context.Context, tx *gorm.DB, prop Proper)
 	Get(ctx context.Context, tx *gorm.DB, propId int64) Proper
+
+	// 获取一个随机道具
+	GetRandomProp(ctx context.Context, tx *gorm.DB) Proper
 }
 
 func (e *PropEntity) ConvertExperiencer() Experiencer {
@@ -124,7 +127,7 @@ func (e *PropEntity) Convert() {
 }
 
 type PropUseCase interface {
-	SendReward(ctx context.Context, tx *gorm.DB, user *UserEntity, now int64, taskRewarder TaskRewarder)
+	SendReward(ctx context.Context, tx *gorm.DB, user *UserEntity, now int64, taskRewarder *TaskReward)
 }
 
 // PropType
