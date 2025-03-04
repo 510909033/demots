@@ -16,7 +16,7 @@ func NewTaskRepository() model.TaskRepository {
 }
 
 func (r *taskRepo) Create(ctx context.Context, tx *gorm.DB, task model.Tasker) {
-	err := tx.WithContext(ctx).Create(&task).Error
+	err := tx.WithContext(ctx).Create(task).Error
 	fn.PanicErr(err)
 }
 

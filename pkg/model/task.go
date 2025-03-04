@@ -9,6 +9,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var _ Tasker = (*TaskEntity)(nil)
+
 // 任务类型，1每天任务，2每周任务， 3每月任务
 type TaskType int64
 
@@ -20,6 +22,7 @@ const (
 
 type TaskEntity struct {
 	Id       int64
+	TaskName string
 	TaskType TaskType
 	MaxCount int64
 	StartTs  int64
@@ -31,6 +34,8 @@ type TaskEntity struct {
 type Tasker interface {
 	// 获取任务id
 	GetTaskId() int64
+	// 任务名称
+	GetTaskName() string
 	// 任务类型，1每天任务，2每周任务， 3每月任务
 	GetTaskType() TaskType
 	// 获取当前任务类型，任务周期内最大可完成任务数, 0 表示不限制
@@ -120,6 +125,11 @@ func (t *TaskEntity) GetDeadline() int64 {
 
 func (t *TaskEntity) GetAward() *TaskReward {
 	return t.Award
+}
+
+// GetTaskName implements Tasker.
+func (t *TaskEntity) GetTaskName() string {
+	return t.TaskName
 }
 
 func (t *TaskEntity) Equal(other Tasker) bool {

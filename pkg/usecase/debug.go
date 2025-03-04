@@ -55,7 +55,7 @@ func (d *_debug) DebugUserInfo(ctx context.Context, user *model.UserEntity) {
 	msg = append(msg, fmt.Sprintf("未分配的智力: %d", user.UnallocatedIntellect))
 	msg = append(msg, fmt.Sprintf("未分配的体质: %d", user.UnallocatedPhysique))
 	msg = append(msg, fmt.Sprintf("未分配的耐力: %d", user.UnallocatedEndurance))
-	msg = append(msg, fmt.Sprintf("用户装备:"))
+	msg = append(msg, "用户装备:")
 
 	for i := 0; i < 10; i++ {
 		pos := int64(i)

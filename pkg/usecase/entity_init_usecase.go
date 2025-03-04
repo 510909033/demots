@@ -65,3 +65,12 @@ func (e *Entity) InitPropAllToMemory(ctx context.Context) {
 		propAll[propInfo.Id] = propInfo
 	}
 }
+
+// 将所有任务数据填充到内存中
+func (e *Entity) InitTaskAllToMemory(ctx context.Context) {
+	var list []*model.TaskEntity
+	fn.PanicErr(db.Model(&model.TaskEntity{}).Where("1=1").Find(&list).Error)
+	for _, taskInfo := range list {
+		taskAll[taskInfo.Id] = taskInfo
+	}
+}

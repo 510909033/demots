@@ -38,8 +38,8 @@ var (
 // 所有道具
 var propAll = make(map[int64]*model.PropEntity, 2000)
 
-// 装备数据, key 是 gear_entity.Id
-var gearAll = make(map[int64]*model.GearEntity, 2000)
+// 任务数据
+var taskAll = make(map[int64]*model.TaskEntity, 2000)
 
 var UserMap = make(map[int64]*model.UserEntity)
 var UserLock = make(map[int64]*sync.Mutex)
@@ -78,6 +78,7 @@ func NewEntity() model.EntityUseCase {
 
 	// e.InitGearAllToMemory(rootCtx)
 	entityUseCase.InitPropAllToMemory(rootCtx)
+	entityUseCase.InitTaskAllToMemory(rootCtx)
 
 	return entityUseCase
 }

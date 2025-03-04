@@ -1,47 +1,41 @@
 package usecase
 
-import "time"
+import (
+	"time"
+
+	"github.com/jinzhu/now"
+)
+
+func init() {
+	now.WeekStartDay = time.Monday
+}
 
 // 获取今天开始时间戳
 func GetTodayStartTs() int64 {
-	now := time.Now()
-	return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location()).Unix()
+	return now.BeginningOfDay().Unix()
 }
 
 // 获取今天结束时间戳
 func GetTodayEndTs() int64 {
-	now := time.Now()
-	return time.Date(now.Year(), now.Month(), now.Day(), 23, 59, 59, 0, now.Location()).Unix()
+	return now.EndOfDay().Unix()
 }
 
 // 获取本周的开始时间戳
 func GetWeekStartTs() int64 {
-	now := time.Now()
-	weekday := int(now.Weekday())
-	if weekday == 0 {
-		weekday = 7
-	}
-	return time.Date(now.Year(), now.Month(), now.Day()-weekday+1, 0, 0, 0, 0, now.Location()).Unix()
+	return now.BeginningOfWeek().Unix()
 }
 
 // 获取本周的结束时间戳
 func GetWeekEndTs() int64 {
-	now := time.Now()
-	weekday := int(now.Weekday())
-	if weekday == 0 {
-		weekday = 7
-	}
-	return time.Date(now.Year(), now.Month(), now.Day()-weekday+7, 23, 59, 59, 0, now.Location()).Unix()
+	return now.EndOfWeek().Unix()
 }
 
 // 获取本月的开始时间戳
 func GetMonthStartTs() int64 {
-	now := time.Now()
-	return time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location()).Unix()
+	return now.BeginningOfMonth().Unix()
 }
 
 // 获取本月的结束时间戳
 func GetMonthEndTs() int64 {
-	now := time.Now()
-	return time.Date(now.Year(), now.Month()+1, 0, 23, 59, 59, 0, now.Location()).Unix()
+	return now.EndOfMonth().Unix()
 }
