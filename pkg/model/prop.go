@@ -39,6 +39,12 @@ type Proper interface {
 	GetStartTs() int64
 	// 有效期，结束时间戳，0 表示永久有效,  右开
 	GetEndTs() int64
+	//
+	GetEntity() any
+	SetContent(content string)
+	SetStartTs(startTs int64)
+	SetEndTs(endTs int64)
+	Equal(other Proper) bool
 }
 
 type PropEntity struct {
@@ -51,6 +57,13 @@ type PropEntity struct {
 	Content string
 
 	Entity any `gorm:"-" json:"-"`
+}
+
+func NewProper(t PropType, data any) Proper {
+	return &PropEntity{
+		Type:   t,
+		Entity: data,
+	}
 }
 
 // ConvertGearEntity implements Proper.
@@ -67,38 +80,13 @@ func (e *PropEntity) ConvertGearEntity() *GearEntity {
 	return nil
 }
 
-// GetContent implements Proper.
-func (e *PropEntity) GetContent() string {
-	return e.Content
-}
-
-// GetEndTs implements Proper.
-func (e *PropEntity) GetEndTs() int64 {
-	return e.EndTs
-}
-
-// GetPropId implements Proper.
-func (e *PropEntity) GetPropId() int64 {
-	return e.Id
-}
-
-// GetStartTs implements Proper.
-func (e *PropEntity) GetStartTs() int64 {
-	return e.StartTs
-}
-
-// GetType implements Proper.
-func (e *PropEntity) GetType() PropType {
-	return e.Type
-}
-
 // NewPropId implements Proper.
 func (e *PropEntity) NewPropId() int64 {
 	return e.Id
 }
 
 type PropRepository interface {
-	Create(ctx context.Context, tx *gorm.DB, prop *PropEntity)
+	Create(ctx context.Context, tx *gorm.DB, prop Proper)
 	Get(ctx context.Context, tx *gorm.DB, propId int64) Proper
 }
 
@@ -149,4 +137,62 @@ func (t PropType) String() string {
 	default:
 		return "unknown"
 	}
+}
+
+func (e *PropEntity) SetContent(content string) {
+	e.Content = content
+}
+
+func (e *PropEntity) SetEndTs(endTs int64) {
+	e.EndTs = endTs
+}
+func (e *PropEntity) SetStartTs(startTs int64) {
+	e.StartTs = startTs
+}
+
+// GetContent implements Proper.
+func (e *PropEntity) GetContent() string {
+	return e.Content
+}
+
+// GetEndTs implements Proper.
+func (e *PropEntity) GetEndTs() int64 {
+	return e.EndTs
+}
+
+// GetPropId implements Proper.
+func (e *PropEntity) GetPropId() int64 {
+	return e.Id
+}
+
+// GetStartTs implements Proper.
+func (e *PropEntity) GetStartTs() int64 {
+	return e.StartTs
+}
+
+// GetType implements Proper.
+func (e *PropEntity) GetType() PropType {
+	return e.Type
+}
+func (e *PropEntity) GetEntity() any {
+	return e.Entity
+}
+func (e *PropEntity) Equal(other Proper) bool {
+	// 比较所有字段
+	if e.Id != other.NewPropId() {
+		return false
+	}
+	if e.Type != other.GetType() {
+		return false
+	}
+	if e.Content != other.GetContent() {
+		return false
+	}
+	if e.StartTs != other.GetStartTs() {
+		return false
+	}
+	if e.EndTs != other.GetEndTs() {
+		return false
+	}
+	return true
 }

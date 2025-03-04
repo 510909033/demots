@@ -15,12 +15,12 @@ func NewPropRepository() model.PropRepository {
 	return &propRepo{}
 }
 
-func (r *propRepo) Create(ctx context.Context, tx *gorm.DB, prop *model.PropEntity) {
-	vals, err := json.Marshal(&prop.Entity)
+func (r *propRepo) Create(ctx context.Context, tx *gorm.DB, prop model.Proper) {
+	vals, err := json.Marshal(prop.GetEntity())
 	fn.PanicErr(err)
-	prop.Content = string(vals)
+	prop.SetContent(string(vals))
 
-	err = tx.WithContext(ctx).Create(&prop).Error
+	err = tx.WithContext(ctx).Create(prop).Error
 	fn.PanicErr(err)
 }
 

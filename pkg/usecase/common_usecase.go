@@ -84,8 +84,8 @@ func (c *commonUseCase) CompleteUserAction(ctx context.Context, tx *gorm.DB, use
 	if param.AddUnallocatedAttribute != nil {
 		userRepo.AddUnallocatedAttribute(ctx, tx, user, &model.LevelConfig{
 			NeedExperience: 0,
-			Intellect:      param.AddAttribute.Intellect,
-			Physique:       param.AddAttribute.Physique,
+			Intellect:      param.AddUnallocatedAttribute.Intellect,
+			Physique:       param.AddUnallocatedAttribute.Physique,
 			// TODO W 继续补充
 		})
 

@@ -57,9 +57,7 @@ func GetJsonString(val any) string {
 	return string(v)
 }
 
-func NewEntity(
-	user model.UserRepository,
-) model.EntityUseCase {
+func NewEntity() model.EntityUseCase {
 	var err error
 	// db, err = gorm.Open(sqlite.Open("/tmp/test.db"), &gorm.Config{})
 
@@ -281,10 +279,10 @@ func (e *Entity) Debug(ctx context.Context) {
 
 	action := "create_user"
 	// action = "prop_test"
-	action = "CompleteAddExperience"
+	// action = "CompleteAddExperience"
 	// action = "SetUserGear"
 	// action = "InitGearConfig"
-	// action = "mock"
+	action = "mock"
 	switch action {
 	case "create_user":
 		user := &model.UserEntity{
@@ -338,7 +336,7 @@ func (e *Entity) Debug(ctx context.Context) {
 	case "InitGearConfig":
 		e.InitGearConfig(ctx)
 	case "mock":
-
+		debug.DebugAddExpProp(ctx)
 	}
 
 }

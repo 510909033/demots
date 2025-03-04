@@ -103,6 +103,8 @@ type AddAttributeReq struct {
 	Intellect int64
 	// 体质
 	Physique int64
+	//  耐力
+	Endurance int64
 }
 
 func (t TUserGear) Value() (driver.Value, error) {
@@ -116,4 +118,24 @@ func (t TUserBag) Value() (driver.Value, error) {
 }
 func (t *TUserBag) Scan(input interface{}) error {
 	return json.Unmarshal(input.([]byte), t)
+}
+
+// 拷贝，值拷贝整数、字符串、bool 简单数据结构
+func (u *UserEntity) CopyEntity() *UserEntity {
+	return &UserEntity{
+		Id:                   u.Id,
+		Intellect:            u.Intellect,
+		UnallocatedIntellect: u.UnallocatedIntellect,
+		Physique:             u.Physique,
+		UnallocatedPhysique:  u.UnallocatedPhysique,
+		Endurance:            u.Endurance,
+		UnallocatedEndurance: u.UnallocatedEndurance,
+		Experience:           u.Experience,
+		Avatar:               u.Avatar,
+		Name:                 u.Name,
+		Age:                  u.Age,
+		Level:                u.Level,
+		UserGear:             map[int64]*UserGearEntity{},
+		UserBag:              map[int64]UserBager{},
+	}
 }

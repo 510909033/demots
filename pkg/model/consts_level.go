@@ -18,6 +18,8 @@ type LevelConfig struct {
 	Intellect int64
 	// 体质
 	Physique int64
+	// 体力
+	Endurance int64
 }
 
 // 等级配置， key是等级

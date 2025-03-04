@@ -5,13 +5,41 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
+
+	"gorm.io/gorm"
 )
+
+func NewDebug() Debuger {
+	return &_debug{}
+}
+
+type Debuger interface {
+	// 用户信息概览
+	DebugUserInfo(ctx context.Context, user *model.UserEntity)
+	// 给道具表 增加一个经验值道具
+	DebugAddExpProp(ctx context.Context)
+}
 
 type _debug struct {
 }
 
-func NewDebug() *_debug {
-	return &_debug{}
+// DebugAddExpProp implements Debuger.
+func (d *_debug) DebugAddExpProp(ctx context.Context) {
+	db.Transaction(func(tx *gorm.DB) error {
+		log.Debug("给道具表 增加一个经验值道具")
+		prop := model.NewProper(model.PropTypeExperience, model.NewExperiencer(1000))
+		prop.SetStartTs(time.Now().Unix())
+		prop.SetEndTs(time.Now().Add(time.Hour * 24 * 365 * 10).Unix())
+
+		propRepo.Create(ctx, tx, prop)
+
+		prop = propRepo.Get(ctx, tx, prop.GetPropId())
+		log.Infof("添加成功, PropId: %d, Content: %s", prop.GetPropId(), prop.GetContent())
+		log.Infof("data: %v", GetJsonString(prop.ConvertExperiencer()))
+
+		return nil
+	})
 }
 
 // 用户信息概览
