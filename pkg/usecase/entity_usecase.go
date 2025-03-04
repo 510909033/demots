@@ -161,12 +161,12 @@ func (e *Entity) UserGiveUpUserTask(ctx context.Context, user *model.UserEntity,
 }
 
 // UserCreateTask implements model.EntityUseCase.
-func (e *Entity) UserCreateTask(ctx context.Context, user *model.UserEntity, taskId model.GetTaskIder) (*model.UserCreateTaskResp, error) {
+func (e *Entity) UserCreateTask(ctx context.Context, user *model.UserEntity, taskId int64) (*model.UserCreateTaskResp, error) {
 	var resp = &model.UserCreateTaskResp{}
 	now := time.Now().Unix()
 
 	err := db.Transaction(func(tx *gorm.DB) error {
-		taskInfo := taskRepo.Get(ctx, tx, taskId.GetTaskId())
+		taskInfo := taskRepo.Get(ctx, tx, taskId)
 
 		if taskInfo.GetStartTs() > 0 && taskInfo.GetStartTs() < now {
 			return model.ErrTaskNotTimeStart
@@ -193,7 +193,7 @@ func (e *Entity) UserCreateTask(ctx context.Context, user *model.UserEntity, tas
 				return model.ErrTaskTypeNotSupport
 			}
 
-			if userTaskRepo.GetUserTaskCount(ctx, tx, user, taskId.GetTaskId(), startTs, endTs) >= maxCount {
+			if userTaskRepo.GetUserTaskCount(ctx, tx, user, taskId, startTs, endTs) >= maxCount {
 				return model.ErrTaskMaxCount
 			}
 		}
@@ -210,7 +210,7 @@ func (e *Entity) UserCreateTask(ctx context.Context, user *model.UserEntity, tas
 		userTaskInfo := &model.UserTaskEntity{
 			Id:         0,
 			UserId:     user.Id,
-			TaskId:     taskId.GetTaskId(),
+			TaskId:     taskId,
 			CreateTs:   now,
 			CompleteTs: 0,
 			Status:     model.EnumUserTaskStatusDoing,

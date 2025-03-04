@@ -18,7 +18,7 @@ type EntityUseCase interface {
 	// 断线重连
 	Reconnect(ctx context.Context, param *LoginReq) (*LoginResp, error)
 	// 用户领取一个任务, 并直接开始
-	UserCreateTask(ctx context.Context, user *UserEntity, taskId GetTaskIder) (*UserCreateTaskResp, error)
+	UserCreateTask(ctx context.Context, user *UserEntity, taskId int64) (*UserCreateTaskResp, error)
 	// 完成一个任务
 	CompleteTask(ctx context.Context, user *UserEntity, userTaskId GetUserTaskIder) (*CompleteTaskResp, error)
 	// 用户放弃一个任务

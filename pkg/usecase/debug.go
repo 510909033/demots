@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jinzhu/now"
 	"gorm.io/gorm"
 )
 
@@ -79,7 +80,14 @@ func (e *_debug) DebugUserTaskInfo(ctx context.Context, user *model.UserEntity) 
 	list := userTaskRepo.DebugGetUserTaskList(ctx, db, user)
 	msg = append(msg, fmt.Sprintf("全部任务数据: %d", len(list)))
 	for _, userTask := range list {
-		msg = append(msg, fmt.Sprintf("\tuserTask.Id: %d, 任务Id: %d, 状态: %s", userTask.Id, userTask.TaskId, userTask.Status.Summary()))
+		msg = append(msg, fmt.Sprintf("\tuserTask.Id: %d, 任务Id: %d, 状态: %s, start: %s, end: %s, 时长: %v 秒",
+			userTask.Id,
+			userTask.TaskId,
+			userTask.Status.Summary(),
+			now.New(time.Unix(userTask.StartTs, 0)).Format("2006-01-02 15:04:05"),
+			now.New(time.Unix(userTask.EndTs, 0)).Format("2006-01-02 15:04:05"),
+			userTask.EndTs-userTask.StartTs,
+		))
 	}
 
 	fmt.Printf("%s\n", strings.Join(msg, "\n"))

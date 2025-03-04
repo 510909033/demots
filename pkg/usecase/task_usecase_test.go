@@ -4,6 +4,7 @@ import (
 	"api/pkg/model"
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -49,16 +50,37 @@ func TestUserCreateTask(t *testing.T) {
 
 	beforeUser := UserMap[loginResp.User.Id]
 
-	// 获取一个任务id
-	var taskInfo model.TaskEntity
-	err = db.Model(&model.TaskEntity{}).Where("1=1").Order("RAND()").First(&taskInfo).Error
-	require.Nil(t, err)
+	// 创建一个任务
+	taskInfo := &model.TaskEntity{
+		Id:       0,
+		TaskName: time.Now().Format("task__2006-01-02 15:04:05"),
+		TaskType: model.EnumTaskTypeDay,
+		MaxCount: 2,
+		StartTs:  0,
+		EndTs:    0,
+		Deadline: 5,
+		Award:    &model.TaskReward{},
+	}
+	taskRepo.Create(ctx, db, taskInfo)
 	require.Greater(t, taskInfo.Id, int64(0))
 
 	{
-		resp, err := enti.UserCreateTask(ctx, beforeUser, &taskInfo)
+		// userTaskRepo.GetUserTaskCount(ctx, db, beforeUser, taskInfo.Id, 0, 0)
+
+		resp, err := enti.UserCreateTask(ctx, beforeUser, taskInfo.Id)
 		require.Nil(t, err)
 		require.NotNil(t, resp)
+
+		cnt := userTaskRepo.GetUserTaskCount(ctx, db, beforeUser, taskInfo.Id, GetTodayStartTs(), GetTodayEndTs())
+		assert.Equal(t, int64(1), cnt)
+
+		resp, err = enti.UserCreateTask(ctx, beforeUser, taskInfo.Id)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+
+		cnt = userTaskRepo.GetUserTaskCount(ctx, db, beforeUser, taskInfo.Id, GetTodayStartTs(), GetTodayEndTs())
+		assert.Equal(t, int64(2), cnt)
+
 	}
 
 }

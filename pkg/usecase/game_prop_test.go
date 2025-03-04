@@ -199,7 +199,7 @@ func TestGameProp(t *testing.T) {
 			require.True(t, before.Equal(after))
 
 			require.Equal(t, before.ConvertExperiencer().GetExperience(), after.ConvertExperiencer().GetExperience())
-			require.Equal(t, before.ConvertExperiencer().GetExperience(), 1000)
+			require.Equal(t, before.ConvertExperiencer().GetExperience(), int64(1000))
 		}
 
 		return nil
