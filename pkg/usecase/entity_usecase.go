@@ -96,13 +96,13 @@ func (e *Entity) UserReceiveUserTaskReward(ctx context.Context, user *model.User
 		// 获取用户任务信息。
 		userTaskInfo := userTaskRepo.Get(ctx, tx, userTaskId.GetUserTaskId())
 
-		if userTaskInfo.GetUserId() != user.GetId(ctx) {
+		if userTaskInfo.UserId != user.GetId(ctx) {
 			return model.ErrUserTaskUserIdNoPermission
 		}
 
-		taskInfo := taskRepo.Get(ctx, tx, userTaskInfo.GetTaskId())
+		taskInfo := taskRepo.Get(ctx, tx, userTaskInfo.UserId)
 
-		switch userTaskInfo.GetStatus() {
+		switch userTaskInfo.Status {
 		case model.EnumUserTaskStatusReceive:
 			// 已领取
 			return model.ErrUserTaskHadReceived
@@ -112,8 +112,8 @@ func (e *Entity) UserReceiveUserTaskReward(ctx context.Context, user *model.User
 			return model.ErrUserTaskNotAllowReceiveAward
 		}
 
-		userTaskInfo.SetReceiveTs(now)
-		userTaskInfo.SetStatus(model.EnumUserTaskStatusReceive)
+		userTaskInfo.ReceiveTs = (now)
+		userTaskInfo.Status = (model.EnumUserTaskStatusReceive)
 		userTaskRepo.Save(ctx, tx, userTaskInfo)
 
 		// 发放奖励
@@ -132,14 +132,14 @@ func (e *Entity) UserGiveUpUserTask(ctx context.Context, user *model.UserEntity,
 		// 获取用户任务信息。
 		userTaskInfo := userTaskRepo.Get(ctx, tx, userTaskId.GetUserTaskId())
 
-		if userTaskInfo.GetUserId() != user.GetId(ctx) {
+		if userTaskInfo.UserId != user.GetId(ctx) {
 			return model.ErrUserTaskUserIdNoPermission
 		}
 
 		// taskInfo := taskRepo.Get(ctx, tx, userTaskInfo.GetTaskId())
 		// _=taskInfo
 
-		switch userTaskInfo.GetStatus() {
+		switch userTaskInfo.Status {
 		case model.EnumUserTaskStatusGiveUp:
 			return nil
 		case model.EnumUserTaskStatusDoing, model.EnumUserTaskStatusUnStart, model.EnumUserTaskStatusComplete:
@@ -149,8 +149,8 @@ func (e *Entity) UserGiveUpUserTask(ctx context.Context, user *model.UserEntity,
 
 		}
 
-		userTaskInfo.SetGiveUpTs(now)
-		userTaskInfo.SetStatus(model.EnumUserTaskStatusGiveUp)
+		userTaskInfo.GiveUpTs = (now)
+		userTaskInfo.Status = (model.EnumUserTaskStatusGiveUp)
 
 		userTaskRepo.Save(ctx, tx, userTaskInfo)
 
@@ -198,25 +198,38 @@ func (e *Entity) UserCreateTask(ctx context.Context, user *model.UserEntity, tas
 			}
 		}
 
-		userTaskInfo := model.NewUserTasker(user.GetId(ctx), taskId.GetTaskId())
-		userTaskInfo.SetUserId(user.GetId(ctx))
-		userTaskInfo.SetTaskId(taskId.GetTaskId())
-		userTaskInfo.SetCreateTs(now)
-		userTaskInfo.SetCompleteTs(0)
-		userTaskInfo.SetGiveUpTs(0)
-		userTaskInfo.SetReceiveTs(0)
-		userTaskInfo.SetStatus(model.EnumUserTaskStatusDoing)
-		userTaskInfo.SetStartTs(now)
+		// userTaskInfo := model.NewUserTaskEntity(user.GetId(ctx), taskId.GetTaskId())
+		// userTaskInfo.SetUserId(user.GetId(ctx))
+		// userTaskInfo.SetTaskId(taskId.GetTaskId())
+		// userTaskInfo.SetCreateTs(now)
+		// userTaskInfo.SetCompleteTs(0)
+		// userTaskInfo.SetGiveUpTs(0)
+		// userTaskInfo.SetReceiveTs(0)
+		// userTaskInfo.SetStatus(model.EnumUserTaskStatusDoing)
+		// userTaskInfo.SetStartTs(now)
+		userTaskInfo := &model.UserTaskEntity{
+			Id:         0,
+			UserId:     user.Id,
+			TaskId:     taskId.GetTaskId(),
+			CreateTs:   now,
+			CompleteTs: 0,
+			Status:     model.EnumUserTaskStatusDoing,
+			GiveUpTs:   0,
+			ReceiveTs:  0,
+			StartTs:    now,
+			EndTs:      0,
+		}
+
 		endTs := int64(0)
 		if taskInfo.GetDeadline() == 0 {
 			endTs = 0
 		} else {
 			endTs = (now) + taskInfo.GetDeadline()
 		}
-		userTaskInfo.SetEndTs(endTs)
+		userTaskInfo.EndTs = (endTs)
 
 		// 保存更新后的用户任务信息。
-		userTaskRepo.Save(ctx, tx, userTaskInfo)
+		userTaskRepo.Create(ctx, tx, userTaskInfo)
 
 		// 如果没有遇到任何错误，返回nil。
 		return nil
@@ -270,7 +283,7 @@ func (e *Entity) Debug(ctx context.Context) {
 	// db.AutoMigrate(&model.GearEntity{})
 	// db.AutoMigrate(&model.UserGearEntity{})
 	db.AutoMigrate(&model.TaskEntity{})
-	// db.AutoMigrate(&model.UserTaskEntity{})
+	db.AutoMigrate(&model.UserTaskEntity{})
 	// db.AutoMigrate(&model.UserBagEntity{})
 
 	// 登录
@@ -367,22 +380,22 @@ func (e *Entity) CompleteTask(ctx context.Context, user *model.UserEntity, userT
 		// _=taskInfo
 
 		// 检查任务状态是否为进行中，如果不是，则返回错误。
-		if userTaskInfo.GetStatus() != model.EnumUserTaskStatusDoing {
+		if userTaskInfo.Status != model.EnumUserTaskStatusDoing {
 			return model.ErrUserTaskStatusNotDoing
 		}
 
 		// 检查任务是否已经到了开始时间。
-		if userTaskInfo.GetStartTs() > 0 && userTaskInfo.GetStartTs() < now {
+		if userTaskInfo.StartTs > 0 && userTaskInfo.StartTs < now {
 			return model.ErrUserTaskTimeNotStart
 		}
 		// 检查任务是否已经过了结束时间。
-		if userTaskInfo.GetEndTs() > 0 && userTaskInfo.GetEndTs() > now {
+		if userTaskInfo.EndTs > 0 && userTaskInfo.EndTs > now {
 			return model.ErrUserTaskTimeEnd
 		}
 
 		// 更新任务的完成时间和状态为已完成。
-		userTaskInfo.SetCompleteTs(now)
-		userTaskInfo.SetStatus(model.EnumUserTaskStatusComplete)
+		userTaskInfo.CompleteTs = (now)
+		userTaskInfo.Status = (model.EnumUserTaskStatusComplete)
 
 		// 保存更新后的用户任务信息。
 		userTaskRepo.Save(ctx, tx, userTaskInfo)

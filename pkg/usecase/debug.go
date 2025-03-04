@@ -19,6 +19,8 @@ type Debuger interface {
 	DebugUserInfo(ctx context.Context, user *model.UserEntity)
 	// 给道具表 增加一个经验值道具
 	DebugAddExpProp(ctx context.Context)
+	// 打印用户任务信息
+	DebugUserTaskInfo(ctx context.Context, user *model.UserEntity)
 }
 
 type _debug struct {
@@ -65,6 +67,19 @@ func (d *_debug) DebugUserInfo(ctx context.Context, user *model.UserEntity) {
 		}
 		PropId := user.UserGear[pos].PropId
 		msg = append(msg, fmt.Sprintf("\t位置: %d, PropId: %d - %s", pos, PropId, propAll[PropId].Type.String()))
+	}
+
+	fmt.Printf("%s\n", strings.Join(msg, "\n"))
+}
+
+func (e *_debug) DebugUserTaskInfo(ctx context.Context, user *model.UserEntity) {
+
+	var msg = make([]string, 0, 100)
+
+	list := userTaskRepo.DebugGetUserTaskList(ctx, db, user)
+	msg = append(msg, fmt.Sprintf("全部任务数据: %d", len(list)))
+	for _, userTask := range list {
+		msg = append(msg, fmt.Sprintf("\tuserTask.Id: %d, 任务Id: %d, 状态: %s", userTask.Id, userTask.TaskId, userTask.Status.Summary()))
 	}
 
 	fmt.Printf("%s\n", strings.Join(msg, "\n"))
