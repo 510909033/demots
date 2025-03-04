@@ -15,12 +15,12 @@ func NewTaskRepository() model.TaskRepository {
 	return &taskRepo{}
 }
 
-func (r *taskRepo) Create(ctx context.Context, tx *gorm.DB, task model.Tasker) {
+func (r *taskRepo) Create(ctx context.Context, tx *gorm.DB, task *model.TaskEntity) {
 	err := tx.WithContext(ctx).Create(task).Error
 	fn.PanicErr(err)
 }
 
-func (r *taskRepo) Get(ctx context.Context, tx *gorm.DB, taskId int64) model.Tasker {
+func (r *taskRepo) Get(ctx context.Context, tx *gorm.DB, taskId int64) *model.TaskEntity {
 	var task model.TaskEntity
 	err := tx.WithContext(ctx).Where("id = ?", taskId).First(&task).Error
 	fn.PanicErr(err)

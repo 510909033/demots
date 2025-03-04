@@ -179,8 +179,8 @@ func TestGameProp(t *testing.T) {
 
 	err := db.Transaction(func(tx *gorm.DB) error {
 		log.Debug("给道具表 增加一个经验值道具")
-		var before model.Proper
-		var after model.Proper
+		var before *model.PropEntity
+		var after *model.PropEntity
 
 		var insertId int64
 		{

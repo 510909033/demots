@@ -9,8 +9,6 @@ import (
 	"gorm.io/gorm"
 )
 
-var _ Tasker = (*TaskEntity)(nil)
-
 // 任务类型，1每天任务，2每周任务， 3每月任务
 type TaskType int64
 
@@ -23,45 +21,30 @@ const (
 type TaskEntity struct {
 	Id       int64
 	TaskName string
-	TaskType TaskType
-	MaxCount int64
-	StartTs  int64
-	EndTs    int64
-	Deadline int64
-	Award    *TaskReward `gorm:"column:award;type:json;not null"`
-}
-
-type Tasker interface {
-	// 获取任务id
-	GetTaskId() int64
-	// 任务名称
-	GetTaskName() string
 	// 任务类型，1每天任务，2每周任务， 3每月任务
-	GetTaskType() TaskType
+	TaskType TaskType
 	// 获取当前任务类型，任务周期内最大可完成任务数, 0 表示不限制
-	GetMaxCount() int64
+	MaxCount int64
 	// 任务开始时间戳【包含】
-	GetStartTs() int64
+	StartTs int64
 	// 任务结束时间戳【不包含】
-	GetEndTs() int64
+	EndTs int64
 	// 任务期限，单位秒，0表示不限
-	GetDeadline() int64
+	Deadline int64
 	// 任务配置的发放奖励
-	GetAward() *TaskReward
-
-	Equal(other Tasker) bool
+	Award *TaskReward `gorm:"column:award;type:json;not null"`
 }
 
 type TaskUseCase interface {
 	// 创建一个任务
-	CreateTask(ctx context.Context, task Tasker)
+	CreateTask(ctx context.Context, task *TaskEntity)
 	// 获取任务详情
-	GetTask(ctx context.Context, taskId int64) Tasker
+	GetTask(ctx context.Context, taskId int64) *TaskEntity
 }
 
 type TaskRepository interface {
-	Create(ctx context.Context, tx *gorm.DB, task Tasker)
-	Get(ctx context.Context, tx *gorm.DB, taskId int64) Tasker
+	Create(ctx context.Context, tx *gorm.DB, task *TaskEntity)
+	Get(ctx context.Context, tx *gorm.DB, taskId int64) *TaskEntity
 }
 
 type Reward struct {
@@ -127,12 +110,12 @@ func (t *TaskEntity) GetAward() *TaskReward {
 	return t.Award
 }
 
-// GetTaskName implements Tasker.
+// GetTaskName implements *TaskEntity.
 func (t *TaskEntity) GetTaskName() string {
 	return t.TaskName
 }
 
-func (t *TaskEntity) Equal(other Tasker) bool {
+func (t *TaskEntity) Equal(other *TaskEntity) bool {
 	// 比较全部字段
 	if t.Id != other.GetTaskId() {
 		return false

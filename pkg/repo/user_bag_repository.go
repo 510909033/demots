@@ -16,7 +16,7 @@ func NewUserBagRepository() model.UserBagRepository {
 	return &userBagRepo{}
 }
 
-func (r *userBagRepo) Create(ctx context.Context, tx *gorm.DB, userBag model.UserBager) {
+func (r *userBagRepo) Create(ctx context.Context, tx *gorm.DB, userBag *model.UserBagEntity) {
 	err := tx.Create(&userBag).Error
 	fn.PanicErr(err)
 }
@@ -26,15 +26,12 @@ func (r *userBagRepo) Delete(ctx context.Context, tx *gorm.DB, userId int64, pro
 	fn.PanicErr(err)
 }
 
-func (r *userBagRepo) GetAll(ctx context.Context, tx *gorm.DB, userId int64) []model.UserBager {
-	var userBags []model.UserBagEntity
+func (r *userBagRepo) GetAll(ctx context.Context, tx *gorm.DB, userId int64) []*model.UserBagEntity {
+	var userBags []*model.UserBagEntity
 	err := tx.Where("user_id = ?", userId).Find(&userBags).Error
 	fn.PanicErr(err)
-	var result []model.UserBager
-	for _, userBag := range userBags {
-		result = append(result, &userBag)
-	}
-	return result
+
+	return userBags
 }
 
 func (r *userBagRepo) SetCount(ctx context.Context, tx *gorm.DB, userId int64, propId int64, count int64) {

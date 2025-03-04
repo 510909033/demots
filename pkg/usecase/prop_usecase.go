@@ -25,10 +25,13 @@ func (p *propUseCase) _SendRewardOne(ctx context.Context, tx *gorm.DB, user *mod
 
 	switch propInfo.GetType() {
 	case model.PropTypeGear:
-		useBag := model.NewUserBager(user, propInfo)
-		useBag.SetAddTs(now)
-		useBag.SetEndTs(0)
-		useBag.SetCount(rewarder.GetCount())
+		useBag := &model.UserBagEntity{
+			UserId: user.Id,
+			PropId: propInfo.Id,
+			AddTs:  now,
+			EndTs:  0,
+			Count:  rewarder.Count,
+		}
 
 		useBagRepo.Create(ctx, tx, useBag)
 	case model.PropTypeExperience:

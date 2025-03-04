@@ -12,10 +12,6 @@ type NewUserIder interface {
 	GetUserId() int64
 }
 
-var (
-	_ *UserEntity = (*UserEntity)(nil)
-)
-
 // 用户
 type UserEntity struct {
 	// 用户id
@@ -73,7 +69,7 @@ func (u *UserEntity) GetUserGear(pos int64) *UserGearEntity {
 }
 
 // key 是propId
-type TUserBag map[int64]UserBager
+type TUserBag map[int64]*UserBagEntity
 
 // // * **境界等级:**  炼气、筑基、金丹、元婴、化神、炼虚、合体、大乘、渡劫。
 type Level int64
@@ -146,6 +142,6 @@ func (u *UserEntity) CopyEntity() *UserEntity {
 		Age:                  u.Age,
 		Level:                u.Level,
 		UserGear:             map[int64]*UserGearEntity{},
-		UserBag:              map[int64]UserBager{},
+		UserBag:              map[int64]*UserBagEntity{},
 	}
 }

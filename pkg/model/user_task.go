@@ -19,7 +19,7 @@ const (
 
 type UserTaskUseCase interface {
 	// 创建用户任务, 返回创建后的用户任务信息
-	CreateUserTask(ctx context.Context, user *UserEntity, task Tasker) *UserTaskEntity
+	CreateUserTask(ctx context.Context, user *UserEntity, task *TaskEntity) *UserTaskEntity
 	// 获取进行中用户任务
 	GetDoingUserTask(ctx context.Context, user *UserEntity) []*UserTaskEntity
 	// 放弃任务

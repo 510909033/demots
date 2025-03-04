@@ -9,8 +9,6 @@ import (
 	"gorm.io/gorm"
 )
 
-var _ Proper = &PropEntity{}
-
 type NewPropId interface {
 	NewPropId() int64
 }
@@ -28,25 +26,6 @@ func _() {
 	// expi
 }
 
-type Proper interface {
-	NewPropId
-	GetPropId() int64
-	GetType() PropType
-	GetContent() string
-	ConvertGearEntity() *GearEntity
-	ConvertExperiencer() Experiencer
-	// 有效期，开始时间戳， 0 表示立即生效， 左闭
-	GetStartTs() int64
-	// 有效期，结束时间戳，0 表示永久有效,  右开
-	GetEndTs() int64
-	//
-	GetEntity() any
-	SetContent(content string)
-	SetStartTs(startTs int64)
-	SetEndTs(endTs int64)
-	Equal(other Proper) bool
-}
-
 type PropEntity struct {
 	// 道具id
 	Id int64
@@ -59,7 +38,7 @@ type PropEntity struct {
 	Entity any `gorm:"-" json:"-"`
 }
 
-func NewProper(t PropType, data any) Proper {
+func NewProper(t PropType, data any) *PropEntity {
 	return &PropEntity{
 		Type:   t,
 		Entity: data,
@@ -86,14 +65,14 @@ func (e *PropEntity) NewPropId() int64 {
 }
 
 type PropRepository interface {
-	Create(ctx context.Context, tx *gorm.DB, prop Proper)
-	Get(ctx context.Context, tx *gorm.DB, propId int64) Proper
+	Create(ctx context.Context, tx *gorm.DB, prop *PropEntity)
+	Get(ctx context.Context, tx *gorm.DB, propId int64) *PropEntity
 
 	// 获取一个随机道具
-	GetRandomProp(ctx context.Context, tx *gorm.DB) Proper
+	GetRandomProp(ctx context.Context, tx *gorm.DB) *PropEntity
 }
 
-func (e *PropEntity) ConvertExperiencer() Experiencer {
+func (e *PropEntity) ConvertExperiencer() *ExperienceEntity {
 	switch e.Type {
 	case PropTypeExperience:
 		var entity = ExperienceEntity{}
@@ -153,12 +132,12 @@ func (e *PropEntity) SetStartTs(startTs int64) {
 	e.StartTs = startTs
 }
 
-// GetContent implements Proper.
+// GetContent implements  *PropEntity.
 func (e *PropEntity) GetContent() string {
 	return e.Content
 }
 
-// GetEndTs implements Proper.
+// GetEndTs implements  *PropEntity.
 func (e *PropEntity) GetEndTs() int64 {
 	return e.EndTs
 }
@@ -180,7 +159,7 @@ func (e *PropEntity) GetType() PropType {
 func (e *PropEntity) GetEntity() any {
 	return e.Entity
 }
-func (e *PropEntity) Equal(other Proper) bool {
+func (e *PropEntity) Equal(other *PropEntity) bool {
 	// 比较所有字段
 	if e.Id != other.NewPropId() {
 		return false

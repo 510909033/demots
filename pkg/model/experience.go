@@ -1,12 +1,12 @@
 package model
 
-var _ Experiencer = (*ExperienceEntity)(nil)
+// var _ Experiencer = (*ExperienceEntity)(nil)
 
-type Experiencer interface {
-	GetExperience() int64
-}
+// type Experiencer interface {
+// 	GetExperience() int64
+// }
 
-func NewExperiencer(experience int64) Experiencer {
+func NewExperiencer(experience int64) *ExperienceEntity {
 	return &ExperienceEntity{
 		Experience: experience,
 	}
