@@ -6,6 +6,7 @@ import (
 	"api/pkg/utils/fn"
 	"context"
 	"encoding/json"
+	"strings"
 	"sync"
 	"time"
 
@@ -413,24 +414,55 @@ func (e *Entity) CompleteTask(ctx context.Context, user *model.UserEntity, userT
 	return resp, nil
 }
 
-// CreateUser implements model.EntityUseCase.
-func (e *Entity) CreateUser(ctx context.Context, user model.UserRepository) (model.UserRepository, error) {
-	// log := log.With("traceid", GetTraceid(ctx))
-	db.AutoMigrate(&model.UserEntity{})
+// Register implements model.EntityUseCase.
+func (e *Entity) Register(ctx context.Context, user *model.UserEntity) (*model.RegisterResp, error) {
+	var resp = &model.RegisterResp{
+		User: user,
+	}
 
-	// err := db.Transaction(func(tx *gorm.DB) error {
-	// 	user.SetName(ctx, "mock")
-	// 	return user.Save(ctx, tx)
-	// })
+	user.Name = strings.TrimSpace(user.Name)
+	if user.Name == "" {
+		return nil, model.ErrUserNameEmpty
+	}
 
-	// if err != nil {
-	// 	log.Errorf("create user failed: %v", err)
-	// 	return nil, err
-	// }
+	err := db.Transaction(func(tx *gorm.DB) error {
+		// userRepo.Create()
+		var existUser model.UserEntity
+		err := tx.Model(&model.UserEntity{}).Where("name=?", user.Name).First(&existUser).Error
+		if err != nil {
+			log.Error(err)
+			return model.ErrServerBusy
+		}
 
-	// log.Infof("create user: %v", GetJsonString(user))
+		if existUser.Id > 0 {
+			return model.ErrUserNameExist
+		}
 
-	return user, nil
+		user = &model.UserEntity{
+			Id:                   0,
+			Intellect:            0,
+			UnallocatedIntellect: 0,
+			Physique:             0,
+			UnallocatedPhysique:  0,
+			Endurance:            0,
+			UnallocatedEndurance: 0,
+			Experience:           0,
+			Avatar:               user.Avatar,
+			Name:                 user.Name,
+			Age:                  0,
+			Level:                1,
+			UserGear:             map[int64]*model.UserGearEntity{},
+			UserBag:              map[int64]*model.UserBagEntity{},
+		}
+
+		userRepo.Create(ctx, tx, user)
+
+		return nil
+	})
+
+	resp.User = user
+
+	return resp, err
 }
 
 // Login implements model.EntityUseCase.

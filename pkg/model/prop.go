@@ -9,6 +9,18 @@ import (
 	"gorm.io/gorm"
 )
 
+type PropUseCase interface {
+	SendReward(ctx context.Context, tx *gorm.DB, user *UserEntity, now int64, taskRewarder *Reward)
+}
+
+type PropRepository interface {
+	Create(ctx context.Context, tx *gorm.DB, prop *PropEntity)
+	Get(ctx context.Context, tx *gorm.DB, propId int64) *PropEntity
+
+	// 获取一个随机道具
+	GetRandomProp(ctx context.Context, tx *gorm.DB) *PropEntity
+}
+
 type NewPropId interface {
 	NewPropId() int64
 }
@@ -64,14 +76,6 @@ func (e *PropEntity) NewPropId() int64 {
 	return e.Id
 }
 
-type PropRepository interface {
-	Create(ctx context.Context, tx *gorm.DB, prop *PropEntity)
-	Get(ctx context.Context, tx *gorm.DB, propId int64) *PropEntity
-
-	// 获取一个随机道具
-	GetRandomProp(ctx context.Context, tx *gorm.DB) *PropEntity
-}
-
 func (e *PropEntity) ConvertExperiencer() *ExperienceEntity {
 	switch e.Type {
 	case PropTypeExperience:
@@ -103,10 +107,6 @@ func (e *PropEntity) Convert() {
 	default:
 		fn.PanicErr(fmt.Errorf("未知的类型 %d", e.Type))
 	}
-}
-
-type PropUseCase interface {
-	SendReward(ctx context.Context, tx *gorm.DB, user *UserEntity, now int64, taskRewarder *TaskReward)
 }
 
 // PropType

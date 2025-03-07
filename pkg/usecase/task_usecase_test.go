@@ -24,7 +24,7 @@ func TestCreate(t *testing.T) {
 			StartTs:  0,
 			EndTs:    0,
 			Deadline: 2,
-			Award:    &model.TaskReward{Props: []model.Reward{{PropId: propRepo.GetRandomProp(ctx, tx).GetPropId(), Count: 2}}},
+			Reward:   &model.Reward{Props: []model.RewardOne{{PropId: propRepo.GetRandomProp(ctx, tx).GetPropId(), Count: 2}}},
 		}
 		taskRepo.Create(ctx, tx, param)
 
@@ -59,7 +59,7 @@ func TestUserCreateTask(t *testing.T) {
 		StartTs:  0,
 		EndTs:    0,
 		Deadline: 5,
-		Award:    &model.TaskReward{},
+		Reward:   &model.Reward{},
 	}
 	taskRepo.Create(ctx, db, taskInfo)
 	require.Greater(t, taskInfo.Id, int64(0))

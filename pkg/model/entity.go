@@ -11,12 +11,14 @@ type GetUserTaskIder interface {
 }
 
 type EntityUseCase interface {
-	// 创建一个用户
-	CreateUser(ctx context.Context, user UserRepository) (UserRepository, error)
+	// 注册用户
+	Register(ctx context.Context, user *UserEntity) (*RegisterResp, error)
 	// 登录并获取用户所有状态数据
 	Login(ctx context.Context, param *LoginReq) (*LoginResp, error)
 	// 断线重连
 	Reconnect(ctx context.Context, param *LoginReq) (*LoginResp, error)
+	// 加载所有游戏配置到客户端本地
+	LoadAllConfigToClient(ctx context.Context, user *UserEntity) (*LoadAllConfigToClientResp, error)
 	// 用户领取一个任务, 并直接开始
 	UserCreateTask(ctx context.Context, user *UserEntity, taskId int64) (*UserCreateTaskResp, error)
 	// 完成一个任务
@@ -81,6 +83,8 @@ type UserActionReq struct {
 
 	// 用户背包增加装备
 	AddUserBagGear AddUserBagGear `json:"add_user_bag_gear"`
+	// 使用背包物品
+	UseUserBagList []UseUserBag `json:"use_user_bag_list"`
 }
 
 type UserChangeGearReq struct {
@@ -101,4 +105,18 @@ type UserCreateTaskResp struct {
 }
 
 type UserReceiveUserTaskResp struct {
+}
+
+type RegisterResp struct {
+	User *UserEntity `json:"user"`
+}
+
+type LoadAllConfigToClientResp struct {
+}
+
+type UseUserBag struct {
+	// 使用的道具id
+	PropId int64 `json:"prop_id"`
+	// 使用的道具数量
+	Count int64 `json:"count"`
 }

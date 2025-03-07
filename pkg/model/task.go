@@ -32,7 +32,7 @@ type TaskEntity struct {
 	// 任务期限，单位秒，0表示不限
 	Deadline int64
 	// 任务配置的发放奖励
-	Award *TaskReward `gorm:"column:award;type:json;not null"`
+	Reward *Reward `gorm:"column:reward;type:json;not null"`
 }
 
 type TaskUseCase interface {
@@ -47,7 +47,7 @@ type TaskRepository interface {
 	Get(ctx context.Context, tx *gorm.DB, taskId int64) *TaskEntity
 }
 
-type Reward struct {
+type RewardOne struct {
 	// 获取 propId
 	PropId int64
 	// 获取数量
@@ -55,30 +55,30 @@ type Reward struct {
 }
 
 // GetCount implements RewardOner.
-func (r *Reward) GetCount() int64 {
+func (r *RewardOne) GetCount() int64 {
 	return r.Count
 }
 
 // GetPropId implements RewardOner.
-func (r *Reward) GetPropId() int64 {
+func (r *RewardOne) GetPropId() int64 {
 	return r.PropId
 }
 
 // 任务配置的发放奖励
-type TaskReward struct {
-	Props []Reward
+type Reward struct {
+	Props []RewardOne
 }
 
 // 实现gorm json
-func (t *TaskReward) Scan(value interface{}) error {
+func (t *Reward) Scan(value interface{}) error {
 	return json.Unmarshal(value.([]byte), t)
 }
-func (t TaskReward) Value() (driver.Value, error) {
+func (t Reward) Value() (driver.Value, error) {
 	return json.Marshal(t)
 }
 
 // GetProps implements TaskRewarder.
-func (t *TaskReward) GetProps() []Reward {
+func (t *Reward) GetProps() []RewardOne {
 	return t.Props
 }
 
@@ -106,8 +106,8 @@ func (t *TaskEntity) GetDeadline() int64 {
 	return t.Deadline
 }
 
-func (t *TaskEntity) GetAward() *TaskReward {
-	return t.Award
+func (t *TaskEntity) GetAward() *Reward {
+	return t.Reward
 }
 
 // GetTaskName implements *TaskEntity.
@@ -135,7 +135,7 @@ func (t *TaskEntity) Equal(other *TaskEntity) bool {
 	if t.Deadline != other.GetDeadline() {
 		return false
 	}
-	if !reflect.DeepEqual(t.Award, other.GetAward()) {
+	if !reflect.DeepEqual(t.Reward, other.GetAward()) {
 		return false
 	}
 

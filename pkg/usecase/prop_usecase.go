@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"api/pkg/model"
+	"api/pkg/utils/fn"
 	"context"
 
 	"gorm.io/gorm"
@@ -15,12 +16,12 @@ type propUseCase struct {
 }
 
 // SendReward implements model.PropUseCase.
-func (p *propUseCase) SendReward(ctx context.Context, tx *gorm.DB, user *model.UserEntity, now int64, taskRewarder *model.TaskReward) {
+func (p *propUseCase) SendReward(ctx context.Context, tx *gorm.DB, user *model.UserEntity, now int64, taskRewarder *model.Reward) {
 	for _, reward := range taskRewarder.GetProps() {
 		p._SendRewardOne(ctx, tx, user, now, reward)
 	}
 }
-func (p *propUseCase) _SendRewardOne(ctx context.Context, tx *gorm.DB, user *model.UserEntity, now int64, rewarder model.Reward) {
+func (p *propUseCase) _SendRewardOne(ctx context.Context, tx *gorm.DB, user *model.UserEntity, now int64, rewarder model.RewardOne) {
 	propInfo := propRepo.Get(ctx, tx, rewarder.GetPropId())
 
 	switch propInfo.GetType() {
@@ -42,5 +43,7 @@ func (p *propUseCase) _SendRewardOne(ctx context.Context, tx *gorm.DB, user *mod
 			AddAttribute:                &model.AddAttributeReq{},
 			AddUserBagGear:              model.AddUserBagGear{},
 		})
+	default:
+		fn.PanicErr(model.ErrPropType)
 	}
 }

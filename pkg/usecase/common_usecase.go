@@ -122,3 +122,9 @@ func (e *commonUseCase) UpdateUser(ctx context.Context, user *model.UserEntity) 
 	UserMap[user.Id] = user
 	lock.Unlock()
 }
+
+func (c *commonUseCase) _useUserBagList(ctx context.Context, tx *gorm.DB, user *model.UserEntity, bags []model.UseUserBag) {
+	if len(bags) == 0 {
+		return
+	}
+}

@@ -19,4 +19,9 @@ var (
 	ErrUserTaskUserIdNoPermission   = errors.New("用户无此任务权限")
 	ErrUserTaskHadReceived          = errors.New("用户任务奖励已领取")
 	ErrUserTaskNotAllowReceiveAward = errors.New("用户任务奖励不允许领取")
+	ErrUserNameEmpty                = errors.New("用户名不能为空")
+	// 服务异常，请稍后重试
+	ErrServerBusy    = errors.New("服务异常，请稍后重试")
+	ErrUserNameExist = errors.New("该昵称已存在")
+	ErrPropType      = errors.New("道具类型错误")
 )
