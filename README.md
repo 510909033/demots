@@ -1,5 +1,3 @@
-// ...existing code...
-
 ## 运行 TypeScript 文件
 
 要运行 `cc/a.ts` 文件，请按照以下步骤操作：
