@@ -1,4 +1,7 @@
-export var Cat;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Cat = void 0;
+var Cat;
 (function (Cat) {
     class CatRepository {
         constructor(name, age) {
@@ -19,4 +22,4 @@ export var Cat;
         }
     }
     Cat.CatUseCase = CatUseCase;
-})(Cat || (Cat = {}));
+})(Cat || (exports.Cat = Cat = {}));

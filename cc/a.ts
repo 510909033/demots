@@ -2,6 +2,8 @@
 // import { User as User2 } from "./src/pkg/domain/user.js";
 import { UserRepository } from "./src/pkg/repository/user_repository.js";
 import { Cat } from "./src/pkg/usecase/cate_usecase.js";
+import { demoMap } from "./src/pkg/usecase/map_usecase.js";
+import { writeFileContent } from "./src/pkg/usecase/require_usecase.js";
 import { AgeType, UserUseCase } from "./src/pkg/usecase/user_usecase.js";
 
 const userUseCase = new UserUseCase(new UserRepository("test1", 2, 3));
@@ -21,6 +23,24 @@ console.log(at);
 
 const cat:Cat.CatUseCase = new Cat.CatUseCase(new Cat.CatRepository("tom",2));
 console.log(cat.getCatInfo().age);
+
+// 示例：读取和写入文件
+// const filePath = './example.txt';
+// const content = 'Hello, world!';
+
+// writeFileContent(filePath, content);
+// const fileContent = readFileContent(filePath);
+// console.log('File content:', fileContent);
+
+const dm = new demoMap()
+console.log(dm.set("a",1))
+console.log(dm.get("a"))
+
+// dm.getEntity().forEach((value, key) => {
+//     console.log(`Key: ${key}, Value: ${value}`);
+// });
+
+
 
 class demo1 implements UserRepositoryInterface {
     age: number;

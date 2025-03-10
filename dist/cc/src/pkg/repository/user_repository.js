@@ -1,4 +1,7 @@
-export class UserRepository {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRepository = void 0;
+class UserRepository {
     constructor(name, age, id) {
         this._phone = "";
         this.name = name;
@@ -31,3 +34,4 @@ export class UserRepository {
         this._phone = phone;
     }
 }
+exports.UserRepository = UserRepository;

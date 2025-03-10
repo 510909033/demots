@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Direction = void 0;
 var Status;
 (function (Status) {
     Status[Status["OK"] = 200] = "OK";
@@ -18,7 +21,7 @@ var Direction;
     Direction[Direction["Down"] = 2] = "Down";
     Direction[Direction["Left"] = 3] = "Left";
     Direction[Direction["Right"] = 4] = "Right";
-})(Direction || (Direction = {}));
+})(Direction || (exports.Direction = Direction = {}));
 const getSomeValue = () => 23;
 var E;
 (function (E) {
@@ -35,8 +38,7 @@ let c = {
     kind: ShapeKind.Circle,
     radius: 100,
 };
-export default Status;
-export { Direction };
+exports.default = Status;
 (function (E) {
     E[E["X"] = 0] = "X";
     E[E["Y"] = 1] = "Y";

@@ -1,6 +1,10 @@
-export const numberRegexp = /^[0-9]+$/;
-export class ZipCodeValidator {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ZipCodeValidator = exports.numberRegexp = void 0;
+exports.numberRegexp = /^[0-9]+$/;
+class ZipCodeValidator {
     isAcceptable(s) {
-        return s.length === 5 && numberRegexp.test(s);
+        return s.length === 5 && exports.numberRegexp.test(s);
     }
 }
+exports.ZipCodeValidator = ZipCodeValidator;

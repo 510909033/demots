@@ -1,4 +1,7 @@
-export class UserUseCase {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserUseCase = void 0;
+class UserUseCase {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
@@ -16,3 +19,4 @@ export class UserUseCase {
         };
     }
 }
+exports.UserUseCase = UserUseCase;
