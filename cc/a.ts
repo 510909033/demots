@@ -2,6 +2,8 @@
 // import { User as User2 } from "./src/pkg/domain/user.js";
 import { UserRepository } from "./src/pkg/repository/user_repository.js";
 import { Cat } from "./src/pkg/usecase/cate_usecase.js";
+import { DemoCondition } from "./src/pkg/usecase/condition_usecase.js";
+import { DemoKeyof } from "./src/pkg/usecase/keyof_usecase.js";
 import { demoMap } from "./src/pkg/usecase/map_usecase.js";
 import { writeFileContent } from "./src/pkg/usecase/require_usecase.js";
 import { AgeType, UserUseCase } from "./src/pkg/usecase/user_usecase.js";
@@ -35,6 +37,12 @@ console.log(cat.getCatInfo().age);
 const dm = new demoMap()
 console.log(dm.set("a",1))
 console.log(dm.get("a"))
+
+let demokeyof = new DemoKeyof()
+demokeyof.demo1();
+demokeyof.demo2();
+
+new DemoCondition()
 
 // dm.getEntity().forEach((value, key) => {
 //     console.log(`Key: ${key}, Value: ${value}`);
