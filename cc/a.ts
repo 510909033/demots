@@ -53,17 +53,23 @@ if (false) {
     let multiHttpJson = new MultiHttpJsonUsecase()
     multiHttpJson.getJsonData();
 }
-let ws = new demoWsClientUsecase('ws://localhost:8080/ws', 5000);
+let ws = new demoWsClientUsecase('ws://localhost:8080/ws', 3000);
+ws.connect();
+
+console.log("over")
+// setTimeout(() => {
+//     ws.checkAndReConnect();
+// }, 2000);
 
 // 此处休眠 3秒
-(async () => {
-    // 此处休眠 3秒
-    await new Promise(resolve => setTimeout(resolve, 2000));
+// (async () => {
+//     // 此处休眠 3秒
+//     await new Promise(resolve => setTimeout(resolve, 2000));
 
- for (let i = 0; i < 10; i++) {
-    ws.sendMessage({name: "name"+ i , time: new Date().toString() });
-}
-})();
+//  for (let i = 0; i < 10; i++) {
+//     ws.sendMessage({name: "name"+ i , time: new Date().toString() });
+// }
+// })();
 
 
 // dm.getEntity().forEach((value, key) => {
