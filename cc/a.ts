@@ -8,6 +8,7 @@ import { DemoKeyof } from "./src/pkg/usecase/keyof_usecase.js";
 import { demoMap } from "./src/pkg/usecase/map_usecase.js";
 import { MultiHttpJsonUsecase } from "./src/pkg/usecase/multi_http_json_usecase.js";
 import { writeFileContent } from "./src/pkg/usecase/require_usecase.js";
+import { demoShellInputUsecase } from "./src/pkg/usecase/shell_input_usecase.js";
 import { AgeType, UserUseCase } from "./src/pkg/usecase/user_usecase.js";
 import { demoWsClientUsecase } from "./src/pkg/usecase/ws_client_usecase.js";
 if (false) {
@@ -53,8 +54,14 @@ if (false) {
     let multiHttpJson = new MultiHttpJsonUsecase()
     multiHttpJson.getJsonData();
 }
-let ws = new demoWsClientUsecase('ws://localhost:8080/ws', 3000);
-ws.connect();
+
+{
+// let ws = new demoWsClientUsecase('ws://localhost:8080/ws', 3000);
+// ws.connect();
+}
+// 示例用法
+const shellInput = new demoShellInputUsecase();
+shellInput.start3();
 
 console.log("over")
 // setTimeout(() => {
