@@ -30,7 +30,7 @@ type CpkeyType = JsonResponse['cpkey'];
 export class demoHttpJsonUsecase {
     getJsonData() {
         // 获取json数据并解析
-        axios.get<ApiData | ErrApiData>('https://cn-admin-test.ruixueyun.com/api/v1/publicadminapi/app/cpinfo?t=893c6794-0b34-4400-a2a2-49cd4e76d741')
+        axios.get<ApiData | ErrApiData>('xxx')
             .then((res) => {
                 // 检查 res.data 是否包含 'data' 属性
                 if ('data' in res.data) {

@@ -26,7 +26,7 @@ interface ErrApiData {
 
 export class MultiHttpJsonUsecase {
     async getJsonData() {
-        const url = 'https://cn-admin-test.ruixueyun.com/api/v1/publicadminapi/app/cpinfo?t=893c6794-0b34-4400-a2a2-49cd4e76d741';
+        const url = 'xxx';
         const requests = Array(10).fill(axios.get<ApiData | ErrApiData>(url));
 
         try {
