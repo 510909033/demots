@@ -6,6 +6,7 @@ import { DemoCondition } from "./src/pkg/usecase/condition_usecase.js";
 import { demoHttpJsonUsecase } from "./src/pkg/usecase/http_json_usecase.js";
 import { DemoKeyof } from "./src/pkg/usecase/keyof_usecase.js";
 import { demoMap } from "./src/pkg/usecase/map_usecase.js";
+import { MultiHttpJsonUsecase } from "./src/pkg/usecase/multi_http_json_usecase.js";
 import { writeFileContent } from "./src/pkg/usecase/require_usecase.js";
 import { AgeType, UserUseCase } from "./src/pkg/usecase/user_usecase.js";
 
@@ -47,6 +48,9 @@ new DemoCondition()
 
 let demoHttpJson = new demoHttpJsonUsecase()
 demoHttpJson.getJsonData();
+
+let multiHttpJson = new MultiHttpJsonUsecase()
+multiHttpJson.getJsonData();
 
 // dm.getEntity().forEach((value, key) => {
 //     console.log(`Key: ${key}, Value: ${value}`);

@@ -1,4 +1,4 @@
-import axios from 'axios'; // 更新导入语句
+import axios from 'axios';
 
 interface JsonResponse {
     cpid: string;
@@ -24,18 +24,17 @@ interface ErrApiData {
     client_ip: string;
 }
 
-// 获取 JsonResponse 中 cpkey 的类型
-type CpkeyType = JsonResponse['cpkey'];
+export class MultiHttpJsonUsecase {
+    async getJsonData() {
+        const url = 'https://cn-admin-test.ruixueyun.com/api/v1/publicadminapi/app/cpinfo?t=893c6794-0b34-4400-a2a2-49cd4e76d741';
+        const requests = Array(10).fill(axios.get<ApiData | ErrApiData>(url));
 
-export class demoHttpJsonUsecase {
-    getJsonData() {
-        // 获取json数据并解析
-        axios.get<ApiData | ErrApiData>('https://cn-admin-test.ruixueyun.com/api/v1/publicadminapi/app/cpinfo?t=893c6794-0b34-4400-a2a2-49cd4e76d741')
-            .then((res) => {
-                // 检查 res.data 是否包含 'data' 属性
+        try {
+            const responses = await Promise.all(requests);
+            responses.forEach((res, index) =>  {
                 if ('data' in res.data) {
                     const data: JsonResponse = res.data.data;
-                    console.log('获取json数据并解析成功', data);
+                    console.log(`请求 ${index + 1} 获取json数据并解析成功`, data);
                     console.log('CPID:', data.cpid);
                     console.log('CPKey:', data.cpkey);
                     console.log('API Domain:', data.api_domain);
@@ -47,29 +46,18 @@ export class demoHttpJsonUsecase {
                     console.log('CP Name:', data.cp_name);
                     console.log('GW K8S Addr:', data.gw_k8s_addr);
                     console.log('K8S Addr:', data.k8s_addr);
-
-                     // 使用 CpkeyType 确保类型一致
-                     const cpkey: CpkeyType = data.cpkey;
-                     console.log('CPKey:', cpkey);
-                     
-                    // typeof
-                    if (typeof data.cpkey == "number") {
-                        console.log('CPKey is a number');
-                    } else {
-                        console.log('CPKey is not a number');
-                        throw new Error('CPKey is not a number');
-                    }
-
-                   
-                    
                 } else {
                     const errorData: ErrApiData = res.data;
-                    console.error('获取json数据失败', errorData.msg);
+                    console.error(`请求 ${index + 1} 获取json数据失败`, errorData.msg);
                     console.error('Client IP:', errorData.client_ip);
                 }
-            })
-            .catch((err) => {
-                console.error('获取json数据失败', err);
             });
+        } catch (err) {
+            console.error('获取json数据失败', err);
+        }
     }
 }
+
+// 创建实例并调用方法
+const multiHttpJsonUsecase = new MultiHttpJsonUsecase();
+multiHttpJsonUsecase.getJsonData();
