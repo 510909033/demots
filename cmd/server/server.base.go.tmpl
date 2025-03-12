@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"sync"
-	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -26,8 +25,7 @@ var connects = Connect{
 
 // 增加一个连接
 func (c *Connect) AddConn(conn *websocket.Conn) {
-	c.connMap.Store(conn, time.Now())
-	log.Printf("New connection added: %v", conn.RemoteAddr())
+	c.connMap.Store(conn, true)
 }
 
 // 判断一个链接是否存在
@@ -38,11 +36,6 @@ func (c *Connect) IsConnExist(conn *websocket.Conn) bool {
 
 // 删除一个连接
 func (c *Connect) DelConn(conn *websocket.Conn) {
-	startTime, ok := c.connMap.Load(conn)
-	if ok {
-		duration := time.Since(startTime.(time.Time))
-		log.Printf("Connection closed: %v, Duration: %v", conn.RemoteAddr(), duration)
-	}
 	c.connMap.Delete(conn)
 }
 
@@ -52,12 +45,7 @@ func echo(w http.ResponseWriter, r *http.Request) {
 		log.Print("upgrade:", err)
 		return
 	}
-	defer func() {
-		connects.DelConn(conn)
-		conn.Close()
-	}()
-
-	connects.AddConn(conn)
+	defer conn.Close()
 
 	for {
 		mt, message, err := conn.ReadMessage()
