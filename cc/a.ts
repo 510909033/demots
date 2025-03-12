@@ -9,48 +9,62 @@ import { demoMap } from "./src/pkg/usecase/map_usecase.js";
 import { MultiHttpJsonUsecase } from "./src/pkg/usecase/multi_http_json_usecase.js";
 import { writeFileContent } from "./src/pkg/usecase/require_usecase.js";
 import { AgeType, UserUseCase } from "./src/pkg/usecase/user_usecase.js";
+import { demoWsClientUsecase } from "./src/pkg/usecase/ws_client_usecase.js";
+if (false) {
+    const userUseCase = new UserUseCase(new UserRepository("test1", 2, 3));
+    console.log(userUseCase.getUserInfo());
+    userUseCase.UpdateUser({
+        id: 1,
+        name: 'test2',
+        age: 18
+    });
+    console.log(userUseCase.getUserInfo());
 
-const userUseCase = new UserUseCase(new UserRepository("test1", 2, 3));
-console.log(userUseCase.getUserInfo());
-userUseCase.UpdateUser({
-    id: 1,
-    name: 'test2',
-    age: 18
-});
-console.log(userUseCase.getUserInfo());
+    const {name1,age1} = userUseCase.demoObj();
+    console.log(name1,age1);
 
-const {name1,age1} = userUseCase.demoObj();
-console.log(name1,age1);
+    let at:AgeType = null;
+    console.log(at);
 
-let at:AgeType = null;
-console.log(at);
+    const cat:Cat.CatUseCase = new Cat.CatUseCase(new Cat.CatRepository("tom",2));
+    console.log(cat.getCatInfo().age);
 
-const cat:Cat.CatUseCase = new Cat.CatUseCase(new Cat.CatRepository("tom",2));
-console.log(cat.getCatInfo().age);
+    // 示例：读取和写入文件
+    // const filePath = './example.txt';
+    // const content = 'Hello, world!';
 
-// 示例：读取和写入文件
-// const filePath = './example.txt';
-// const content = 'Hello, world!';
+    // writeFileContent(filePath, content);
+    // const fileContent = readFileContent(filePath);
+    // console.log('File content:', fileContent);
 
-// writeFileContent(filePath, content);
-// const fileContent = readFileContent(filePath);
-// console.log('File content:', fileContent);
+    const dm = new demoMap()
+    console.log(dm.set("a",1))
+    console.log(dm.get("a"))
 
-const dm = new demoMap()
-console.log(dm.set("a",1))
-console.log(dm.get("a"))
+    let demokeyof = new DemoKeyof()
+    demokeyof.demo1();
+    demokeyof.demo2();
 
-let demokeyof = new DemoKeyof()
-demokeyof.demo1();
-demokeyof.demo2();
+    new DemoCondition()
 
-new DemoCondition()
+    let demoHttpJson = new demoHttpJsonUsecase()
+    demoHttpJson.getJsonData();
 
-let demoHttpJson = new demoHttpJsonUsecase()
-demoHttpJson.getJsonData();
+    let multiHttpJson = new MultiHttpJsonUsecase()
+    multiHttpJson.getJsonData();
+}
+let ws = new demoWsClientUsecase('ws://localhost:8080/ws', 5000);
 
-let multiHttpJson = new MultiHttpJsonUsecase()
-multiHttpJson.getJsonData();
+// 此处休眠 3秒
+(async () => {
+    // 此处休眠 3秒
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+ for (let i = 0; i < 10; i++) {
+    ws.sendMessage({name: "name"+ i , time: new Date().toString() });
+}
+})();
+
 
 // dm.getEntity().forEach((value, key) => {
 //     console.log(`Key: ${key}, Value: ${value}`);

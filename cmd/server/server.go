@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -46,6 +47,11 @@ func (c *Connect) DelConn(conn *websocket.Conn) {
 	c.connMap.Delete(conn)
 }
 
+type Response struct {
+	Msg  string `json:"msg"`
+	Time string `json:"time"`
+}
+
 func echo(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -66,7 +72,14 @@ func echo(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		log.Printf("recv: %s", message)
-		err = conn.WriteMessage(mt, message)
+		time.Sleep(time.Second * 2)
+
+		var resp = Response{
+			Msg:  "server response: " + string(message),
+			Time: time.Now().Format(time.DateTime),
+		}
+		vals, _ := json.Marshal(resp)
+		err = conn.WriteMessage(mt, vals)
 		if err != nil {
 			log.Println("write:", err)
 			break
@@ -75,6 +88,7 @@ func echo(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	log.SetFlags(log.Lshortfile | log.Ltime)
 	http.HandleFunc("/ws", echo)
 	fmt.Println("WebSocket server started at ws://localhost:8080/ws")
 	log.Fatal(http.ListenAndServe(":8080", nil))

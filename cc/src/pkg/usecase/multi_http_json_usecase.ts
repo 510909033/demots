@@ -59,5 +59,5 @@ export class MultiHttpJsonUsecase {
 }
 
 // 创建实例并调用方法
-const multiHttpJsonUsecase = new MultiHttpJsonUsecase();
-multiHttpJsonUsecase.getJsonData();
+// const multiHttpJsonUsecase = new MultiHttpJsonUsecase();
+// multiHttpJsonUsecase.getJsonData();
