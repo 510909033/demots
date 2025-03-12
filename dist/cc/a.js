@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const user_repository_js_1 = require("./src/pkg/repository/user_repository.js");
 const cate_usecase_js_1 = require("./src/pkg/usecase/cate_usecase.js");
 const condition_usecase_js_1 = require("./src/pkg/usecase/condition_usecase.js");
+const http_json_usecase_js_1 = require("./src/pkg/usecase/http_json_usecase.js");
 const keyof_usecase_js_1 = require("./src/pkg/usecase/keyof_usecase.js");
 const map_usecase_js_1 = require("./src/pkg/usecase/map_usecase.js");
 const user_usecase_js_1 = require("./src/pkg/usecase/user_usecase.js");
@@ -35,6 +36,8 @@ let demokeyof = new keyof_usecase_js_1.DemoKeyof();
 demokeyof.demo1();
 demokeyof.demo2();
 new condition_usecase_js_1.DemoCondition();
+let demoHttpJson = new http_json_usecase_js_1.demoHttpJsonUsecase();
+demoHttpJson.getJsonData();
 // dm.getEntity().forEach((value, key) => {
 //     console.log(`Key: ${key}, Value: ${value}`);
 // });

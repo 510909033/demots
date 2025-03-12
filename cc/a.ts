@@ -3,6 +3,7 @@
 import { UserRepository } from "./src/pkg/repository/user_repository.js";
 import { Cat } from "./src/pkg/usecase/cate_usecase.js";
 import { DemoCondition } from "./src/pkg/usecase/condition_usecase.js";
+import { demoHttpJsonUsecase } from "./src/pkg/usecase/http_json_usecase.js";
 import { DemoKeyof } from "./src/pkg/usecase/keyof_usecase.js";
 import { demoMap } from "./src/pkg/usecase/map_usecase.js";
 import { writeFileContent } from "./src/pkg/usecase/require_usecase.js";
@@ -43,6 +44,9 @@ demokeyof.demo1();
 demokeyof.demo2();
 
 new DemoCondition()
+
+let demoHttpJson = new demoHttpJsonUsecase()
+demoHttpJson.getJsonData();
 
 // dm.getEntity().forEach((value, key) => {
 //     console.log(`Key: ${key}, Value: ${value}`);
