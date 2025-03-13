@@ -1,3 +1,4 @@
+// node
 {
     "compilerOptions": {
         "moduleResolution": "node",
@@ -12,3 +13,17 @@
         "src/**/*.ts"
     ]
 }
+// {
+//     "compilerOptions": {
+//         "moduleResolution": "node",
+//         "target": "es2017",
+//         "module": "ESNext", // 修改为 ES Module
+//         "outDir": "./dist",
+//         "rootDir": "./",
+//         "strict": true,
+//         "esModuleInterop": true
+//     },
+//     "include": [
+//         "src/**/*.ts"
+//     ]
+// }

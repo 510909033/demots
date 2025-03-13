@@ -90,6 +90,6 @@ func echo(w http.ResponseWriter, r *http.Request) {
 func main() {
 	log.SetFlags(log.Lshortfile | log.Ltime)
 	http.HandleFunc("/ws", echo)
-	fmt.Println("WebSocket server started at ws://localhost:8080/ws")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("WebSocket server started at ws://localhost:8070/ws")
+	log.Fatal(http.ListenAndServe(":8070", nil))
 }

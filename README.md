@@ -35,3 +35,31 @@
 
 
 npm install -g live-server
+
+------
+npm install --save-dev webpack webpack-cli webpack-dev-server
+
+创建 Webpack 配置文件 (webpack.config.js)：
+
+const path = require('path');
+
+module.exports = {
+    entry: './dist/src/main.js',
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+        libraryTarget: 'var',
+        library: 'App'
+    },
+    mode: 'development',
+    target: 'web'
+};
+
+打包代码：
+
+bash
+npx webpack
+在 HTML 中引入打包后的文件：
+
+html
+<script src="./dist/bundle.js"></script>

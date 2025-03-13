@@ -31,6 +31,7 @@ export class demoWsClientUsecase {
     
         this.ws.onmessage = (event) => {
             try {
+                console.log('WebSocket Received message:', event);
                 const message = JSON.parse(event.data);
                 this.handleMessage(message);
             } catch (error) {
