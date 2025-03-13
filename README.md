@@ -32,3 +32,6 @@
     ```
 
 这样你就可以运行 `cc/a.ts` 文件了。
+
+
+npm install -g live-server

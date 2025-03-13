@@ -1,17 +1,20 @@
 // import { User } from "./src/pkg/domain/user.js";
 // import { User as User2 } from "./src/pkg/domain/user.js";
+// npx tsc && node dist/cc/a.js
 import { UserRepository } from "./src/pkg/repository/user_repository.js";
-import { Cat } from "./src/pkg/usecase/cate_usecase.js";
-import { DemoCondition } from "./src/pkg/usecase/condition_usecase.js";
-import { demoHttpJsonUsecase } from "./src/pkg/usecase/http_json_usecase.js";
-import { DemoKeyof } from "./src/pkg/usecase/keyof_usecase.js";
-import { demoMap } from "./src/pkg/usecase/map_usecase.js";
-import { MultiHttpJsonUsecase } from "./src/pkg/usecase/multi_http_json_usecase.js";
-import { writeFileContent } from "./src/pkg/usecase/require_usecase.js";
-import { demoShellInputUsecase } from "./src/pkg/usecase/shell_input_usecase.js";
+// import { Cat } from "./src/pkg/usecase/cate_usecase.js";
+// import { DemoCondition } from "./src/pkg/usecase/condition_usecase.js";
+// import { demoHttpJsonUsecase } from "./src/pkg/usecase/http_json_usecase.js";
+// import { DemoKeyof } from "./src/pkg/usecase/keyof_usecase.js";
+// import { DemoLogWinstonStack } from "./src/pkg/usecase/logcase/winston_stack_usecase.js";
+// import { DemoLogWinston } from "./src/pkg/usecase/logcase/winston_usecase.js";
+// import { demoMap } from "./src/pkg/usecase/map_usecase.js";
+// import { MultiHttpJsonUsecase } from "./src/pkg/usecase/multi_http_json_usecase.js";
+// import { writeFileContent } from "./src/pkg/usecase/require_usecase.js";
+// import { demoShellInputUsecase } from "./src/pkg/usecase/shell_input_usecase.js";
 import { AgeType, UserUseCase } from "./src/pkg/usecase/user_usecase.js";
-import { demoWsClientUsecase } from "./src/pkg/usecase/ws_client_usecase.js";
-if (false) {
+// import { demoWsClientUsecase } from "./src/pkg/usecase/ws_client_usecase.js";
+if (true) {
     const userUseCase = new UserUseCase(new UserRepository("test1", 2, 3));
     console.log(userUseCase.getUserInfo());
     userUseCase.UpdateUser({
@@ -21,49 +24,64 @@ if (false) {
     });
     console.log(userUseCase.getUserInfo());
 
-    const {name1,age1} = userUseCase.demoObj();
-    console.log(name1,age1);
+    // const {name1,age1} = userUseCase.demoObj();
+    // console.log(name1,age1);
 
-    let at:AgeType = null;
-    console.log(at);
+    // let at:AgeType = null;
+    // console.log(at);
 
-    const cat:Cat.CatUseCase = new Cat.CatUseCase(new Cat.CatRepository("tom",2));
-    console.log(cat.getCatInfo().age);
+    // const cat:Cat.CatUseCase = new Cat.CatUseCase(new Cat.CatRepository("tom",2));
+    // console.log(cat.getCatInfo().age);
 
-    // 示例：读取和写入文件
-    // const filePath = './example.txt';
-    // const content = 'Hello, world!';
+    // // 示例：读取和写入文件
+    // // const filePath = './example.txt';
+    // // const content = 'Hello, world!';
 
-    // writeFileContent(filePath, content);
-    // const fileContent = readFileContent(filePath);
-    // console.log('File content:', fileContent);
+    // // writeFileContent(filePath, content);
+    // // const fileContent = readFileContent(filePath);
+    // // console.log('File content:', fileContent);
 
-    const dm = new demoMap()
-    console.log(dm.set("a",1))
-    console.log(dm.get("a"))
+    // const dm = new demoMap()
+    // console.log(dm.set("a",1))
+    // console.log(dm.get("a"))
 
-    let demokeyof = new DemoKeyof()
-    demokeyof.demo1();
-    demokeyof.demo2();
+    // let demokeyof = new DemoKeyof()
+    // demokeyof.demo1();
+    // demokeyof.demo2();
 
-    new DemoCondition()
+    // new DemoCondition()
 
-    let demoHttpJson = new demoHttpJsonUsecase()
-    demoHttpJson.getJsonData();
+    // let demoHttpJson = new demoHttpJsonUsecase()
+    // demoHttpJson.getJsonData();
 
-    let multiHttpJson = new MultiHttpJsonUsecase()
-    multiHttpJson.getJsonData();
+    // let multiHttpJson = new MultiHttpJsonUsecase()
+    // multiHttpJson.getJsonData();
 }
 
 {
 // let ws = new demoWsClientUsecase('ws://localhost:8080/ws', 3000);
 // ws.connect();
 }
-// 示例用法
-const shellInput = new demoShellInputUsecase();
-shellInput.start3();
 
-console.log("over")
+{
+// 示例用法
+// const shellInput = new demoShellInputUsecase();
+// shellInput.start3();
+}
+
+{
+//     let logWinston = new DemoLogWinston();
+// logWinston.warn("test");
+// logWinston.demo();
+
+}
+
+{
+    // let logWinston = new DemoLogWinstonStack();
+    // logWinston.error("test");
+}
+
+// console.log("over")
 // setTimeout(() => {
 //     ws.checkAndReConnect();
 // }, 2000);
@@ -85,41 +103,41 @@ console.log("over")
 
 
 
-class demo1 implements UserRepositoryInterface {
-    age: number;
-    id: number;
-    name: string;
-    constructor(name: string, age: number, id?: number) {
-        this.name = name;
-        this.age = age;
-        if (typeof id === 'undefined') {
-            this.id = Math.random(); 
-        } else {
-            this.id = id;
-        }
-    }
-    update(user: UserEntity): Resp {
-        this.name = user.name;
-        this.age = user.age;
-        this.id = user.id;
-        return { 
-            status: 1,
-            message: 'User updated successfully',
-            HasError: ()=> true,
-        };
-    }
+// class demo1 implements UserRepositoryInterface {
+//     age: number;
+//     id: number;
+//     name: string;
+//     constructor(name: string, age: number, id?: number) {
+//         this.name = name;
+//         this.age = age;
+//         if (typeof id === 'undefined') {
+//             this.id = Math.random(); 
+//         } else {
+//             this.id = id;
+//         }
+//     }
+//     update(user: UserEntity): Resp {
+//         this.name = user.name;
+//         this.age = user.age;
+//         this.id = user.id;
+//         return { 
+//             status: 1,
+//             message: 'User updated successfully',
+//             HasError: ()=> true,
+//         };
+//     }
 
-    getUserInfo(): UserEntity {
-        return {
-            id: this.id,
-            name: this.name,
-            age: this.age
-        };
-    }
+//     getUserInfo(): UserEntity {
+//         return {
+//             id: this.id,
+//             name: this.name,
+//             age: this.age
+//         };
+//     }
   
- }
+//  }
 
- let d:demo1 = new demo1("",1,2)
+//  let d:demo1 = new demo1("",1,2)
 
 
 

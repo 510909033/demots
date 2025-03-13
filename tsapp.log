@@ -1,0 +1,6 @@
+2025-03-13T02:19:38.938Z warn: test
+2025-03-13T02:23:26.403Z warn: test
+{"level":"warn","message":"test"}
+{"level":"warn","message":"test","timestamp":"2025-03-13T02:28:31.464Z"}
+2025-03-13T02:29:23.752Z warn: test
+{"level":"warn","message":"test","timestamp":"2025-03-13T02:37:32.342Z"}

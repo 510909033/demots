@@ -1,3 +1,4 @@
 pkg/usecase/__debug_bin3288115677
 dist/
 cmd/server/__debug_bin*
+*.js
