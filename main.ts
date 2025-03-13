@@ -15,6 +15,7 @@ import { UserRepository } from "./src/pkg/repository/user_repository.js";
 import { AgeType, UserUseCase } from "./src/pkg/usecase/user_usecase.js";
 // import { demoWsClientUsecase } from "./src/pkg/usecase/ws_client_usecase.js";
 if (true) {
+    // 11
     const userUseCase = new UserUseCase(new UserRepository("test1", 2, 3));
     console.log(userUseCase.getUserInfo());
     userUseCase.UpdateUser({
