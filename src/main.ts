@@ -7,13 +7,14 @@ import { UserRepository } from "./pkg/repository/user_repository";
 // import { demoHttpJsonUsecase } from "./pkg/usecase/http_json_usecase.js";
 // import { DemoKeyof } from "./pkg/usecase/keyof_usecase.js";
 // import { DemoLogWinstonStack } from "./pkg/usecase/logcase/winston_stack_usecase.js";
-import { DemoLogWinston } from "./pkg/usecase/logcase/winston_usecase";
+// import { DemoLogWinston } from "./pkg/usecase/logcase/winston_usecase";
 // import { demoMap } from "./pkg/usecase/map_usecase.js";
 // import { MultiHttpJsonUsecase } from "./pkg/usecase/multi_http_json_usecase.js";
 // import { writeFileContent } from "./pkg/usecase/require_usecase.js";
 // import { demoShellInputUsecase } from "./pkg/usecase/shell_input_usecase.js";
 import { AgeType, UserUseCase } from "./pkg/usecase/user_usecase";
-// import { demoWsClientUsecase } from "./pkg/usecase/ws_client_usecase";
+import { demoWsClientUsecase } from "./pkg/usecase/ws_client_usecase";
+// 
 if (true) {
     // 11
     // const userUseCase = new UserUseCase(new UserRepository("test1", 2, 3));
@@ -60,13 +61,13 @@ if (true) {
 }
 
 {
-// let ws = new demoWsClientUsecase('ws://localhost:8070/ws', 3000);
-// ws.connect();
-// let i = 0
-// setInterval(() => {
-//     i++
-//     ws.sendMessage({name: "name"+ i , time: new Date().toString() });
-// }, 2000);
+let ws = new demoWsClientUsecase('ws://localhost:8070/ws', 3000);
+ws.connect();
+let i = 0
+setInterval(() => {
+    i++
+    ws.sendMessage({name: "name"+ i , time: new Date().toString() });
+}, 2000);
 }
 
 {
@@ -76,9 +77,9 @@ if (true) {
 }
 
 {
-    let logWinston = new DemoLogWinston();
-logWinston.warn("test");
-logWinston.demo();
+//     let logWinston = new DemoLogWinston();
+// logWinston.warn("test");
+// logWinston.demo();
 
 }
 
